@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import NextNprogress from "nextjs-progressbar";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../scss/global.scss";
 import { CartProvider } from "@/contexts";
@@ -68,7 +68,7 @@ export default function App(props) {
     if ('Notification' in window && Notification.permission === 'granted') {
       const notificationOptions = {
         body: '¡La conexión se ha restablecido!',
-        icon: 'ruta/al/icono.png',
+        icon: '/icon-192x192.jpg',
       };
   
       new Notification('Conexión Restablecida', notificationOptions);
@@ -78,24 +78,17 @@ export default function App(props) {
 
   return (
     <>
-      <NextNprogress
-        color="#FF0"
-        startPosition={0.3}
-        stopDelayMs={200}
-        height={10}
-      />
-
+ 
       <CartProvider>
         <Component {...pageProps} />
         <ToastContainer
-          autoClose={5000}
+          autoClose={1000}
           newestOnTop
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
           draggable
           pauseOnHover={false}
-          hideProgressBar={true}
         />
       </CartProvider>
     </>
