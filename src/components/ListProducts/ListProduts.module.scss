@@ -1,0 +1,15 @@
+.listProduct {  
+  text-align: center;
+  width: 100%;
+  padding: 1rem;
+
+  h4 {
+    margin-top: 6rem;    
+  }
+
+  .product {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  }
+}
