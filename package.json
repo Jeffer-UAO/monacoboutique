@@ -1,5 +1,5 @@
 {
-  "name": "INFINITY_MARKET",
+  "name": "monaco_boutique",
   "version": "6.1.0",
   "private": true,
   "scripts": {
@@ -29,12 +29,7 @@
     "react-toastify": "^10.0.5",
     "reactstrap": "^9.2.2",
     "sass": "^1.77.1",
-    "yup": "^1.4.0",   
-    "jwt-decode": "^3.1.2",
-    "install": "^0.13.0",
-    "next-boost": "^0.12.0",
-    "react-dropzone": "^14.2.3",
-    "react-intl": "^6.4.4",
+    "yup": "^1.4.0",      
     "react-player": "^2.13.0"
   },
   "devDependencies": {
