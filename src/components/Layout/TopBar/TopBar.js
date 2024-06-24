@@ -29,7 +29,7 @@ export function TopBar() {
     <div className={styles.topbar}>
       <div className={styles.topbar_component}>
         <div onClick={() => toggleModal()}>
-          <BiMenu size={15} color="gray" />
+          <BiMenu size={20} color="gray" />
         </div>
 
         <Link href="/">
@@ -38,12 +38,12 @@ export function TopBar() {
 
         <div className={styles.right}>
           <div onClick={() => router.push("/featured")}>
-            <BsSearch size={15} color="gray" />
+            <BsSearch size={20} color="gray" />
           </div>
 
           <div className={styles.cart} onClick={() => router.push("/cart")}>
             <p> {total > 0 ? total : ""}</p>
-            <AiOutlineShoppingCart size={15} color="gray" />
+            <AiOutlineShoppingCart size={20} color="gray" />
           </div>
         </div>
       </div>
