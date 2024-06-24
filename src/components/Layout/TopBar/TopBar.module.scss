@@ -24,15 +24,13 @@
       position: relative;
       padding: 0 0 0 10px;
 
-      p {
-        font-weight: bold;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      p {      
+        display: flex;       
         position: absolute;
-        font-size: 10px;
-        left: 20px;
-        width: 1.5rem;
+        font-size: 20px;
+        left: 40px;
+        top: -15px;
+        
       }
     }
 
