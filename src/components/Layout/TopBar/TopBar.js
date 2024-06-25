@@ -59,11 +59,14 @@ export function TopBar() {
       <Redes />
 
       <div className={styles.topbar_category}>
-        <p>categoria</p>
-        <p>categoria</p>
-        <p>categoria</p>
-        <p>categoria</p>
-        <p>categoria</p>
+        <p onClick={()=> console.log("Hola")}>categoria</p>
+        <p onClick={()=> console.log("Hola")}>categoria</p>
+        <p onClick={()=> console.log("Hola")}>categoria</p>
+        <p onClick={()=> console.log("Hola")}>categoria</p>
+        <p onClick={()=> console.log("Hola")}>categoria</p>
+        <p onClick={()=> console.log("Hola")}>categoria</p>
+        <p onClick={()=> console.log("Hola")}>categoria</p>
+        <p onClick={()=> console.log("Hola")}>categoria</p>
       </div>
 
       <Modal isOpen={isOpen} toggle={toggleModal}>
