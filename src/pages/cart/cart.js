@@ -16,7 +16,6 @@ import { BASE_NAME } from "@/config/constants";
 const productCtrl = new Products();
 
 export default function CartPage() {
-
   const { cart } = useCart();
   const [product, setProduct] = useState("");
   const [load, setLoad] = useState(true);
@@ -24,11 +23,9 @@ export default function CartPage() {
 
   // const [newProduct, setNewProduct] = useState("");
   // const [follow, setFollow] = useState("");
- 
 
   // const identificadorUnico = generarIdentificadorUnico();
-  
- 
+
   useEffect(() => {
     (async () => {
       try {
@@ -45,17 +42,15 @@ export default function CartPage() {
     })();
   }, [cart]);
 
- 
-  
-
   return (
     <BasicLayout>
-         {load ? (
+      <Separator />
+      {load ? (
         <h1>Cargando ...</h1>
       ) : (
         <>
           {hasProduct ? (
-            <ListCart product={product}  />
+            <ListCart product={product} />
           ) : (
             <NotFound
               title={"Uppss... en este momento no hay productos en el Carrito"}

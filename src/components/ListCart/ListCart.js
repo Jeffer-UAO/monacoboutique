@@ -12,7 +12,7 @@ import styles from "./ListCart.module.scss";
 export function ListCart(props) {
   const { product } = props;
   const { decreaseCart, incrementCart, deleteCart } = useCart();
-  
+
   const format = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Cambia 'es-ES' por tu configuración regional
   };
@@ -49,28 +49,23 @@ export function ListCart(props) {
                   <AiOutlineMinusCircle
                     onClick={() => decreaseCart(item.codigo)}
                     size={30}
-                    color="grey"
                   />
                   <p>{item.quantity}</p>
                   <AiFillPlusCircle
                     onClick={() => incrementCart(item.codigo)}
                     size={30}
-                    color="green"
                   />
                 </span>
-
-                <Button
+                <BsTrash3
+                  size="20"
+                  color="gray"
                   onClick={() => deleteCart(item.codigo)}
-                  className={styles.btnDelete}
-                >
-                  <BsTrash3 size="15" color="red" />
-                </Button>
+                />
               </div>
-         
-            <hr/>
+
+              <hr />
             </div>
           </div>
-          
         ))}
       </div>
     </div>

@@ -10,11 +10,7 @@ import { BsFacebook } from "react-icons/bs";
 export function Redes() {
   return (
     <div className={styles.space}>
-      <ul>
-        <li>DESPACHOS A TODA COLOMBIA</li>
-        {/* <li>Facebook</li> */}
-        <p>Cel: 3216540641</p>
-      </ul>
+     <CardImg src="/image/monaco-text.png" alt="No hay logo" />{" "}
     </div>
   );
 }

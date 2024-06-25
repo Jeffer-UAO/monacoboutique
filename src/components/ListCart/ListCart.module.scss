@@ -1,16 +1,11 @@
-.list {
-  background-color: aliceblue;
-  margin-bottom: 5rem;
+.list {  
+  margin-bottom: 1rem 5rem;
 
-  label {
-    padding-top: 5rem;
-  }
-  h4 {  
-    margin-top: 1rem;
+  h4 {     
     text-align: center;
     color: rgb(104, 104, 104);
   }
-  padding: 1rem;
+
 
   .card {
     display: flex;
@@ -38,6 +33,7 @@
       }
     }
     .btn {
+      border: none;
       display: flex;
       justify-content: space-between;
       span {

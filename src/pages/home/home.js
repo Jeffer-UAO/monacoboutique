@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Categories } from "@/api/category";
 import { Products } from "@/api/products";
 import { Videos } from "@/api/videos";
-import { ListCategories, Footer, Promotion, Exclusive } from "@/components";
+import { ListCategories, Footer, Promotion, Exclusive, Separator } from "@/components";
 
 import { BasicLayout } from "../../layouts";
 
@@ -56,7 +56,7 @@ export default function HomePage() {
     return (
       <>
         <BasicLayout>
-         
+         <Separator />
           <ListCategories categories={categories} />
 
           {/* <ListVideos videos={videos} /> */}

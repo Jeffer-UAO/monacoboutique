@@ -1,8 +1,7 @@
 import { size } from "lodash";
-import { Listproducts, Footer, NotFound, FooterApp, Redes } from "@/components";
+import { Listproducts, Footer, NotFound, Separator } from "@/components";
 
 import { BasicLayout } from "@/layouts";
-
 
 export default function category(props) {
   const { products, category } = props;
@@ -10,7 +9,7 @@ export default function category(props) {
 
   return (
     <BasicLayout>
-         
+      <Separator />
       {hasProduct ? (
         <Listproducts products={products} title={category.name} />
       ) : (
@@ -18,7 +17,7 @@ export default function category(props) {
           title={"Upppss... No hay productos para mostrar en esta categoría"}
         />
       )}
-     
+
       <Footer />
     </BasicLayout>
   );

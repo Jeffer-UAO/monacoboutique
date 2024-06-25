@@ -16,6 +16,7 @@ import {
 import Link from "next/link";
 
 import styles from "./TopBar.module.scss";
+import { Redes } from "@/components/Redes";
 export function TopBar() {
   const router = useRouter();
   const { total } = useCart();
@@ -28,8 +29,14 @@ export function TopBar() {
   return (
     <div className={styles.topbar}>
       <div className={styles.topbar_component}>
-        <div onClick={() => toggleModal()}>
-          <BiMenu size={30} color="gray" />
+        <div className={styles.right}>
+          <div onClick={() => toggleModal()}>
+            <BiMenu size={30} color="gray" />
+          </div>
+
+          <div>
+            <BiMenu size={30} color="#FAF6F3" />
+          </div>
         </div>
 
         <Link href="/">
@@ -47,6 +54,9 @@ export function TopBar() {
           </div>
         </div>
       </div>
+
+
+      <Redes />
 
       <div className={styles.topbar_category}>
         <p>categoria</p>
