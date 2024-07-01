@@ -7,13 +7,14 @@ export async function getServerSideProps(context) {
   const { params } = context;
   const { category } = params;
 
+
   const categoryCtrl = new Categories();
   const responseCategory = await categoryCtrl.getBySlug(category);
 
 
   const productCtrl = new Products();
   const responseProduct = await productCtrl.getProductsByCategory(
-    responseCategory.id
+    responseCategory?.id
   )
 
   

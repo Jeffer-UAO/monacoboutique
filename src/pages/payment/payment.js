@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useCart } from "@/hooks/useCart";
-import { Products } from "@/api/products";
+import { useCart, useAuth } from "@/hooks";
+import { Products } from "@/api";
 import {
-  Footer,
-  FooterCart,
-  ListCart,
-  NotFound,
-  Redes,
   Separator,
+  NotFound,
+  Payment,
+  Footer,
+  ListPayment,
 } from "@/components";
 import { BasicLayout } from "@/layouts";
 import { size } from "lodash";
@@ -15,16 +14,17 @@ import { BASE_NAME } from "@/config/constants";
 
 const productCtrl = new Products();
 
-export default function CartPage() {
+export default function PaymentPage() {
+  const { user } = useAuth();
   const { cart } = useCart();
   const [product, setProduct] = useState("");
   const [load, setLoad] = useState(true);
   const hasProduct = size(product) > 0;
 
-  // const [newProduct, setNewProduct] = useState("");
-  // const [follow, setFollow] = useState("");
-
-  // const identificadorUnico = generarIdentificadorUnico();
+  if (!user) {
+    window.location.replace("/join/login");
+    return null;
+  }
 
   useEffect(() => {
     (async () => {
@@ -50,16 +50,18 @@ export default function CartPage() {
       ) : (
         <>
           {hasProduct ? (
-            <ListCart product={product} />
+            <>
+              <ListPayment product={product} />
+              <Payment product={product} />
+              <Footer />
+            </>
           ) : (
             <NotFound
-              title={"Uppss... en este momento no hay productos en el Carrito"}
+              title={"Uppss... en este momento no hay productos para pagar"}
             />
           )}
         </>
       )}
-    
     </BasicLayout>
   );
 }
-

@@ -16,3 +16,5 @@ export * from "./Layout";
  export * from "./SearchTable";
  export * from "./ListVideos";
  export * from "./Separator";
+ export * from "./Payment";
+ export * from "./LoginFormClient";

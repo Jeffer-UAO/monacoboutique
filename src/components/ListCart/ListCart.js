@@ -17,57 +17,82 @@ export function ListCart(props) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Cambia 'es-ES' por tu configuración regional
   };
 
+  // Calcular el subtotal del carrito
+  const subtotal = product.reduce(
+    (acc, item) => acc + item.price1 * item.quantity,
+    0
+  );
+
   return (
-    <div>
-      <div className={styles.list}>
-        <label></label>
-        <h4>CARRITO</h4>
-        {map(product, (item) => (
-          <div key={item.codigo} className={styles.card}>
-            {item.images ? (
-              <CardImg
-                alt="Card image cap"
-                src={BASE_NAME + item.images}
-                className={styles.skeleton}
-              />
-            ) : (
-              <CardImg
-                alt="Card image cap"
-                src={item.image_alterna}
-                className={styles.skeleton}
-              />
-            )}
+    <div className={styles.list}>
+      <h4>CARRITO</h4>
+      {map(product, (item) => (
+        <div key={item.codigo} className={styles.card}>
+          <BsTrash3
+            size="20"
+            color="gray"
+            onClick={() => deleteCart(item.codigo)}
+          />
+          {item.images ? (
+            <CardImg
+              alt="Card image cap"
+              src={BASE_NAME + item.images}
+              className={styles.skeleton}
+            />
+          ) : (
+            <CardImg
+              alt="Card image cap"
+              src={item.image_alterna}
+              className={styles.skeleton}
+            />
+          )}
 
-            <div className={styles.detalle}>
+          <div className={styles.detalle}>
+            <label>
+              <h6>Producto:</h6>
               <p className={styles.name}>{item.name_extend}</p>
-
+            </label>
+            <label>
+              <h6>Precio:</h6>
               <p className={styles.price}>$ {format(item.price1)} </p>
-              {/* <p className={styles.price}>Mayor: $ {item.price2}</p> */}
+            </label>
 
+            <label>
+              <h6>Cantidad:</h6>
               <div className={styles.btn}>
-                <span>
-                  <AiOutlineMinusCircle
-                    onClick={() => decreaseCart(item.codigo)}
-                    size={30}
-                  />
-                  <p>{item.quantity}</p>
-                  <AiFillPlusCircle
-                    onClick={() => incrementCart(item.codigo)}
-                    size={30}
-                  />
-                </span>
-                <BsTrash3
-                  size="20"
-                  color="gray"
-                  onClick={() => deleteCart(item.codigo)}
+                <AiOutlineMinusCircle
+                  onClick={() => decreaseCart(item.codigo)}
+                  size={20}
+                />
+                <h5>{item.quantity}</h5>
+                <AiFillPlusCircle
+                  onClick={() => incrementCart(item.codigo)}
+                  size={20}
                 />
               </div>
+            </label>
 
-              <hr />
-            </div>
+            <label>
+              <h6>Subtotal:</h6>
+              <p className={styles.price}>
+                $ {format(item.price1 * item.quantity)}{" "}
+              </p>
+            </label>
+
+            <hr />
           </div>
-        ))}
+        </div>
+      ))}
+
+      <div className={styles.totales}>
+        <p>Subtotal: $ {format(subtotal)}</p>
+        <p>Descuento: $ 0</p>
+        <p>Total: $ {format(subtotal)}</p>
       </div>
+
+      <Button onClick={() => window.location.replace("/payment")}>Finalizar Compra</Button>
+     
+      <Button color="primary" onClick={() => window.location.replace("/")}>Volver</Button>
     </div>
   );
 }
