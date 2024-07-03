@@ -1,4 +1,4 @@
-export { default } from "./[product]";
+export { default } from "./product";
 import { Products } from "@/api/products";
 
 export async function getServerSideProps(context) {

@@ -3,7 +3,6 @@ import { Button, CardImg } from "reactstrap";
 import { map } from "lodash";
 import { BASE_NAME } from "@/config/constants";
 
-import { BsTrash3 } from "react-icons/bs";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 
@@ -26,29 +25,40 @@ export function ListPayment(props) {
   return (
     <div className={styles.list}>
       <div className={styles.totales}>
-        <h1>Resumen de la compra</h1>
+        <h2>Resumen de Compra</h2>
         <p>Subtotal: $ {format(subtotal)}</p>
         <p>Descuento: $ 0</p>
-        <p>Total: $ {format(subtotal)}</p>
+        <p>Total a Pagar: $ {format(subtotal)}</p>
       </div>
 
-      <div className={styles.delivery}>
-        <h1>Informacion de envio</h1>
+      <div className={styles.totales}>
+        <h2>Dirección de envío</h2>
+        <p>Subtotal: $ {format(subtotal)}</p>
+        <p>Descuento: $ 0</p>
+        <p>Total a Pagar: $ {format(subtotal)}</p>
+        <label>Cambiar dirección</label>
+        <Button> Cambiar Dirección</Button>
       </div>
 
-      <div className={styles.payment}>
-        <h1>Informacion de pago</h1>
-      <Button onClick={() => window.location.replace("/payment")}>
-        Finalizar Compra
-      </Button>
-      <Button color="primary" onClick={() => window.location.replace("/")}>
-        Seguir comprando
-      </Button>
+      <div className={styles.totales}>
+        <h2>Información de pago</h2>
+
+        <p>Subtotal: $ {format(subtotal)}</p>
+        <p>Descuento: $ 0</p>
+        <p>Total a Pagar: $ {format(subtotal)}</p>
+        <label>Cambiar datos de pago</label>
+
+        <Button onClick={() => window.location.replace("/payment")}>
+          Finalizar Compra
+        </Button>
+        <Button color="primary" onClick={() => window.location.replace("/")}>
+          Seguir comprando
+        </Button>
       </div>
 
-
+      <hr></hr>
       <div className={styles.detalle}>
-        <h1>Detalle del pedido</h1>
+        <h2>Detalle del pedido</h2>
         {map(product, (item) => (
           <div key={item.codigo} className={styles.card}>
             {item.images ? (
@@ -66,12 +76,10 @@ export function ListPayment(props) {
             )}
 
             <div className={styles.detalle}>
-             
-                <p className={styles.name}>{item.name_extend}</p>
-                <p className={styles.price}>
-                  $ {format(item.price1 * item.quantity)}{" "}
-                </p>
-              
+              <p className={styles.name}>{item.name_extend}</p>
+              <p className={styles.price}>
+                $ {format(item.price1 * item.quantity)}{" "}
+              </p>
 
               <label>
                 <div className={styles.btn}>

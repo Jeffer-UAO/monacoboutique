@@ -18,3 +18,4 @@ export * from "./Layout";
  export * from "./Separator";
  export * from "./Payment";
  export * from "./LoginFormClient";
+ export * from "./Address";

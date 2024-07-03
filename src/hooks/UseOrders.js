@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Orders } from "@/api/orders";
+import { Orders } from "@/api";
 
 export function useOrder() {
   const [loading, setLoading] = useState(true);

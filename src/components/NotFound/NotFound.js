@@ -8,8 +8,7 @@ export function NotFound(props) {
     <div className={styles.notfound}>
       <SiNotepadplusplus size={240} />
       <h6>{title}</h6>
-      <hr></hr>
-      <Button onClick={() => window.location.replace("/")}>Volver</Button>
+      
     </div>
   );
 }

@@ -73,8 +73,8 @@ export function TopBar() {
 
         <ModalBody>
           <FormGroup>
-            <Link href="/">
-              <p>Ir a...</p>
+            <Link href="/address">
+              <p>Direcciones de Envio</p>
             </Link>
             <Link href="/">
               <p>Ir a...</p>

@@ -3,6 +3,7 @@ import { useCart } from "@/hooks/useCart";
 import { Products } from "@/api/products";
 import {
   Footer,
+  FooterApp,
   FooterCart,
   ListCart,
   NotFound,
@@ -50,16 +51,22 @@ export default function CartPage() {
       ) : (
         <>
           {hasProduct ? (
-            <ListCart product={product} />
+            <>
+              <ListCart product={product} />
+              <FooterApp title1={'finalizar compra'} title2={'continuar comprando'} />
+            </>
           ) : (
-            <NotFound
-              title={"Uppss... en este momento no hay productos en el Carrito"}
-            />
+            <>
+              <NotFound
+                title={
+                  "Uppss... en este momento no hay productos en el Carrito"
+                }
+              />
+              <FooterApp />
+            </>
           )}
         </>
       )}
-    
     </BasicLayout>
   );
 }
-

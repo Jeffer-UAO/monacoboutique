@@ -10,7 +10,6 @@ import {
 } from "@/components";
 import { BasicLayout } from "@/layouts";
 import { size } from "lodash";
-import { BASE_NAME } from "@/config/constants";
 
 const productCtrl = new Products();
 

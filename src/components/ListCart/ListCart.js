@@ -26,6 +26,7 @@ export function ListCart(props) {
   return (
     <div className={styles.list}>
       <h4>CARRITO</h4>
+      <hr></hr>
       {map(product, (item) => (
         <div key={item.codigo} className={styles.card}>
           <BsTrash3
@@ -48,8 +49,7 @@ export function ListCart(props) {
           )}
 
           <div className={styles.detalle}>
-            <label>
-              <h6>Producto:</h6>
+            <label>             
               <p className={styles.name}>{item.name_extend}</p>
             </label>
             <label>
@@ -62,12 +62,12 @@ export function ListCart(props) {
               <div className={styles.btn}>
                 <AiOutlineMinusCircle
                   onClick={() => decreaseCart(item.codigo)}
-                  size={20}
+                  size={30}
                 />
                 <h5>{item.quantity}</h5>
                 <AiFillPlusCircle
                   onClick={() => incrementCart(item.codigo)}
-                  size={20}
+                  size={30}
                 />
               </div>
             </label>
@@ -89,10 +89,12 @@ export function ListCart(props) {
         <p>Descuento: $ 0</p>
         <p>Total: $ {format(subtotal)}</p>
       </div>
-
+{/* 
       <Button onClick={() => window.location.replace("/payment")}>Finalizar Compra</Button>
      
-      <Button color="primary" onClick={() => window.location.replace("/")}>Volver</Button>
+      <Button color="primary" onClick={() => window.location.replace("/")}>Continuar Comprando</Button>
+    */}
+   
     </div>
   );
 }
