@@ -53,7 +53,7 @@ export default function CartPage() {
           {hasProduct ? (
             <>
               <ListCart product={product} />
-              <FooterApp title1={'finalizar compra'} title2={'continuar comprando'} />
+              <FooterApp title1={'Finalizar Compra'} title2={'Continuar Comprando'} />
             </>
           ) : (
             <>

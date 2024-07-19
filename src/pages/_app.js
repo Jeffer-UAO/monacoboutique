@@ -5,6 +5,7 @@ import "../scss/global.scss";
 import { CartProvider, AuthProvider } from "@/contexts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { MercadoPagoProvider } from "@/contexts/MercadoPagoContext";
 
 export default function App(props) {
   const { Component, pageProps } = props;
@@ -74,18 +75,20 @@ export default function App(props) {
   return (
     <>
       <AuthProvider>
-        <CartProvider>
-          <Component {...pageProps} />
-          <ToastContainer
-            autoClose={1000}
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover={false}
-          />
-        </CartProvider>
+      <MercadoPagoProvider>
+          <CartProvider>
+            <Component {...pageProps} />
+            <ToastContainer
+              autoClose={1000}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover={false}
+            />
+          </CartProvider>
+          </MercadoPagoProvider>
       </AuthProvider>
     </>
   );

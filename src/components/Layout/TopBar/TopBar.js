@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useCart } from "@/hooks/useCart";
+// import { u }
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiMenu } from "react-icons/bi";
 import { BsSearch } from "react-icons/bs";
@@ -26,6 +27,12 @@ export function TopBar() {
     setIsOpen(!isOpen);
   };
 
+ 
+
+  function handleClickAdmin() {
+    router.push("https://testing.suprainnovations.store/admin-dashboard/");
+  }
+
   return (
     <div className={styles.topbar}>
       <div className={styles.topbar_component}>
@@ -35,7 +42,7 @@ export function TopBar() {
           </div>
 
           <div>
-            <BiMenu size={30} color="#FAF6F3" />
+            <BiMenu size={25} color="#FAF6F3" />
           </div>
         </div>
 
@@ -45,12 +52,12 @@ export function TopBar() {
 
         <div className={styles.right}>
           <div onClick={() => router.push("/featured")}>
-            <BsSearch size={30} color="gray" />
+            <BsSearch size={25} color="gray" />
           </div>
 
           <div className={styles.cart} onClick={() => router.push("/cart")}>
             <p> {total > 0 ? total : ""}</p>
-            <AiOutlineShoppingCart size={30} color="gray" />
+            <AiOutlineShoppingCart size={25} color="gray" />
           </div>
         </div>
       </div>
@@ -73,10 +80,10 @@ export function TopBar() {
 
         <ModalBody>
           <FormGroup>
-            <Link href="/address">
-              <p>Direcciones de Envio</p>
-            </Link>
-            <Link href="/">
+        
+              <p onClick={()=> handleClickAdmin()}>Admin</p>
+         
+            {/* <Link href="/">
               <p>Ir a...</p>
             </Link>
             <Link href="/">
@@ -84,7 +91,7 @@ export function TopBar() {
             </Link>
             <Link href="/">
               <p>Ir a...</p>
-            </Link>
+            </Link> */}
           </FormGroup>
         </ModalBody>
 

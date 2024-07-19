@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@dotdev/next-boost": "^2.1.1",
+    "@mercadopago/sdk-js": "^0.0.3",
+    "@mercadopago/sdk-react": "^0.0.19",
     "@types/jwt-decode": "^3.1.0",
     "bootstrap": "^5.3.3",
     "classnames": "^2.5.1",

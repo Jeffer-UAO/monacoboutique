@@ -50,8 +50,7 @@ const { user, accesToken } = useAuth();
         <>
           {hasAddress ? (
             <>
-              <ListAddress address={address}/>
-              <FooterApp title1={'Volver'} title2={'Aceptar'}/>
+              <ListAddress address={address}/>             
             </>
           ) : (
             <>
