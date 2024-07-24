@@ -1,4 +1,4 @@
-export const BASE_API = "https://infinitymarket.suprainnovations.store"
+export const BASE_API = "https://boutiquemonaco.suprainnovations.store"
 export const SEARCH_HISTORY = "search-history";
 export const CART = "cart";
 export const TOKEN = "token";

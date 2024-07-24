@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCart } from "@/hooks/useCart";
+import { size, map } from "lodash";
+import { Categories } from "@/api";
 // import { u }
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiMenu } from "react-icons/bi";
@@ -18,7 +20,13 @@ import Link from "next/link";
 
 import styles from "./TopBar.module.scss";
 import { Redes } from "@/components/Redes";
+
+
+
+const categoriesCtrl = new Categories();
+
 export function TopBar() {
+  const [categories, setCategories] = useState([])
   const router = useRouter();
   const { total } = useCart();
   const [isOpen, setIsOpen] = useState(false);
@@ -27,10 +35,23 @@ export function TopBar() {
     setIsOpen(!isOpen);
   };
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await categoriesCtrl.getAll();
+        setCategories(data);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);  
+
+
+  console.log(categories);
  
 
   function handleClickAdmin() {
-    router.push("https://testing.suprainnovations.store/admin-dashboard/");
+    router.push("https://boutiquemonaco.suprainnovations.store/admin-dashboard/");
   }
 
   return (
@@ -65,14 +86,11 @@ export function TopBar() {
       <Redes />
 
       <div className={styles.topbar_category}>
-        <p onClick={() => console.log("Hola")}>categoria</p>
-        <p onClick={() => console.log("Hola")}>categoria</p>
-        <p onClick={() => console.log("Hola")}>categoria</p>
-        <p onClick={() => console.log("Hola")}>categoria</p>
-        <p onClick={() => console.log("Hola")}>categoria</p>
-        <p onClick={() => console.log("Hola")}>categoria</p>
-        <p onClick={() => console.log("Hola")}>categoria</p>
-        <p onClick={() => console.log("Hola")}>categoria</p>
+          {map(categories, (category) => (
+            <p key={category.id}>
+              <Link href={`/products/${category.slug}`}> {category.name} </Link>
+            </p>
+          ))}
       </div>
 
       <Modal isOpen={isOpen} toggle={toggleModal}>
@@ -96,7 +114,7 @@ export function TopBar() {
         </ModalBody>
 
         <ModalFooter>
-          <p>Footer</p>
+         <Button color="primary" onClick={toggleModal}></Button>
         </ModalFooter>
       </Modal>
     </div>
