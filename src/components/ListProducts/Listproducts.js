@@ -6,6 +6,7 @@ import { Stokend } from "./Stokend";
 
 export function Listproducts(props) {
   const { products, title } = props;
+  console.log(products);
 
   return (
     <div className={styles.listProduct}>
@@ -13,10 +14,10 @@ export function Listproducts(props) {
       <div className={styles.product}>
         
         {products && map(products, (product, index) => (
-          <div key={index}>
+          <div key={index} className={styles.data}>
             {product.productData.active &&
               (!product.productData.soldout ? (
-                product.itemactitemData.qty_available > 0 ? (
+                product.itemactitemData?.qty_available > 0 ? (
                   <Available key={index} product={product} />
                 ) : (
                   <Stokend key={index} product={product} />
