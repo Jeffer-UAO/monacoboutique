@@ -1,6 +1,7 @@
 .detailProduct {
   text-align: center;
-  width: 100%;  
+  width: 100%;
+  padding-bottom: 5rem;
 
   img {
     aspect-ratio: 3/3.3;
@@ -9,18 +10,20 @@
     max-width: 30rem;
     max-height: 30rem;
   }
-  h6 {   
+
+  h6 {
     color: #b3b3b3;
     text-decoration: line-through;
   }
 
   .product {
+
     // background-color: rgba(233, 234, 234, 0.344);
     iframe {
       margin: 0;
       padding: 0;
       width: 100%;
-      
+
     }
 
     .title {
@@ -33,17 +36,17 @@
         justify-content: center;
         align-items: center;
 
-        > h5 {
+        >h5 {
           padding-top: 0.5rem;
           font-size: 1rem;
           color: #757575;
+
         }
       }
     }
 
     .description {
       position: relative;
-      padding: 10px;
 
       button {
         width: 95% !important;
@@ -51,12 +54,14 @@
         border: none;
         color: black;
         margin: 1rem 0;
+
       }
 
       .whatsapp {
         position: absolute;
         top: -4rem;
         right: 1rem;
+
         margin: 0.5rem;
         padding: 0.6rem;
         background-color: #76be1e;
@@ -119,4 +124,3 @@
     }
   }
 }
-
