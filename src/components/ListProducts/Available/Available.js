@@ -116,12 +116,10 @@ export function Available(props) {
           {product.productData.price1 > 0 && (
             <h6>$ {format(product.productData.price1)}</h6>
           )}
-          
-          <p> $ {format(parseInt(product.productData.price1 * 1.3))}</p>
          
         </div>
       </div>
-      <p>DISPONIBLE: {parseInt(product.itemactitemData.qty_available)}</p>
+    
       <Button
         color="primary"
         onClick={() => addProductId(product.productData.codigo)}

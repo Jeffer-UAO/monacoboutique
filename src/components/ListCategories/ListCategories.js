@@ -7,7 +7,7 @@ import styles from "./ListCategories.module.scss";
 
 export function ListCategories(props) {
   const { categories } = props;
-  const scale = "c_scale,f_auto,q_30,w_500/";
+  const scale = "c_scale,f_auto/";
   const upload = "image/upload/";
 
   return (

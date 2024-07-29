@@ -6,7 +6,6 @@ import { Stokend } from "./Stokend";
 
 export function Listproducts(props) {
   const { products, title } = props;
-  console.log(products);
 
   return (
     <div className={styles.listProduct}>

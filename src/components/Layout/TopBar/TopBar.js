@@ -47,9 +47,6 @@ export function TopBar() {
   }, []);  
 
 
-  console.log(categories);
- 
-
   function handleClickAdmin() {
     router.push("https://boutiquemonaco.suprainnovations.store/admin-dashboard/");
   }
