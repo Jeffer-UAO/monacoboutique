@@ -1,7 +1,6 @@
 .detailProduct {
   text-align: center;
   width: 100%;  
-  padding-bottom: 5rem;
 
   img {
     aspect-ratio: 3/3.3;
@@ -13,7 +12,6 @@
   h6 {   
     color: #b3b3b3;
     text-decoration: line-through;
-  
   }
 
   .product {
@@ -25,12 +23,10 @@
       
     }
 
-    
-
     .title {
       .name_extend {
         text-transform: uppercase;
-        font-size: smaller;
+        // font-size: smaller;
       }
 
       .price {
@@ -41,7 +37,6 @@
           padding-top: 0.5rem;
           font-size: 1rem;
           color: #757575;
-        
         }
       }
     }
@@ -56,14 +51,12 @@
         border: none;
         color: black;
         margin: 1rem 0;
-      
       }
 
       .whatsapp {
         position: absolute;
         top: -4rem;
         right: 1rem;
-
         margin: 0.5rem;
         padding: 0.6rem;
         background-color: #76be1e;
@@ -90,7 +83,6 @@
   display: grid;
   gap: 0.6rem;
   grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
-  
 
   &__product2 {
     background-color: rgb(254, 254, 254);
