@@ -5,7 +5,6 @@ import "../scss/global.scss";
 import { CartProvider, AuthProvider } from "@/contexts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { MercadoPagoProvider } from "@/contexts/MercadoPagoContext";
 
 export default function App(props) {
   const { Component, pageProps } = props;
@@ -74,8 +73,7 @@ export default function App(props) {
 
   return (
     <>
-      <AuthProvider>
-      <MercadoPagoProvider>
+      <AuthProvider>   
           <CartProvider>
             <Component {...pageProps} />
             <ToastContainer
@@ -87,8 +85,7 @@ export default function App(props) {
               draggable
               pauseOnHover={false}
             />
-          </CartProvider>
-          </MercadoPagoProvider>
+          </CartProvider>      
       </AuthProvider>
     </>
   );

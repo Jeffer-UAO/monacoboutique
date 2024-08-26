@@ -1,13 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Payment } from "@/api";
 import { useCart } from "@/hooks";
 import { map } from "lodash";
-import {
-  Button,
-  CardImg,
-  Modal,
-  ModalBody,  
-  ModalHeader,
-} from "reactstrap";
+import { Button, CardImg, Modal, ModalBody, ModalHeader } from "reactstrap";
 
 // import { CheckoutForm } from "../CheckoutForm";
 
@@ -18,14 +13,21 @@ import { AiOutlineMinusCircle } from "react-icons/ai";
 
 import styles from "./ListPayment.module.scss";
 
+const paymentCtrl = new Payment();
+
 export function ListPayment(props) {
-  const { product, address } = props;
+  const { product, address, payMethod } = props;
   const { decreaseCart, incrementCart, deleteCart } = useCart();
   const [isModalOpen, setModalOpen] = useState(false);
 
   const [selectedAddress, setSelectedAddress] = useState(
     Array.isArray(address) && address.length > 0 ? address[0] : null
   );
+
+  const payment = async(product, total) => {
+    const response = await paymentCtrl.createPayload(product, total);
+    console.log(response);
+  };
 
   const format = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Cambia 'es-ES' por tu configuración regional
@@ -67,25 +69,32 @@ export function ListPayment(props) {
           </>
         ) : (
           <p>Dirección no disponible</p>
+        )}
+        <Button outline onClick={() => toggleModal()}>
+          Cambiar Dirección de envio
+        </Button>
+      </div>
+
+      {/* <div className={styles.totales}>
+        <h2>Método de pago</h2>
+        {selectedAddress ? (
+          <>
+            <p>Método: {selectedAddress.title}</p>
+            <p>Valor: {selectedAddress.name_lastname}</p>           
+          </>
+        ) : (
+          <p>Dirección no disponible</p>
         )}       
-        <Button outline onClick={() => toggleModal()}>Cambiar Dirección de envio</Button>
-      </div>
+        <Button outline onClick={() => toggleModal()}>Cambiar</Button>
+      </div> */}
 
-      <div className={styles.totales}>
-        <h2>Metodo de pago</h2>       
-       {/* <CheckoutForm /> */}
-        <Button outline onClick={() => window.location.replace("/payment")}>
-          Cambiar metodo de pago
-        </Button>
-      </div>
+      <Button block color="primary" onClick={() => payment(product, subtotal)}>
+        Pagar
+      </Button>
 
-        <Button block color="primary" onClick={() => window.location.replace("/")}>
-          Pagar
-        </Button>
-
-        <Button block outline onClick={() => window.location.replace("/payment")}>
-          Continuar Comprando
-        </Button>
+      <Button block outline onClick={() => window.location.replace("/payment")}>
+        Continuar Comprando
+      </Button>
       <hr></hr>
       <div className={styles.detalle}>
         <h2>Detalle del pedido</h2>
@@ -129,9 +138,7 @@ export function ListPayment(props) {
           </div>
         ))}
 
-        <Button onClick={() => window.location.replace("/payment")}>
-          Finalizar Compra
-        </Button>
+        <Button onClick={() => payment("Payment")}>Finalizar Compra</Button>
 
         <Button color="primary" onClick={() => window.location.replace("/")}>
           Seguir comprando
@@ -149,7 +156,7 @@ export function ListPayment(props) {
               <ul>
                 {address.map((addres, index) => (
                   <div key={index}>
-                    <li  onClick={() => selectecAddress(addres)}>
+                    <li onClick={() => selectecAddress(addres)}>
                       <h6>{addres.title}</h6>
                       <p>NOMBRE: {addres.name_lastname}</p>
                       <p>DIRECCIÓN: {addres.address}</p>

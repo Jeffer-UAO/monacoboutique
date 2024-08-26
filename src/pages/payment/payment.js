@@ -5,7 +5,6 @@ import { Products, Address } from "@/api";
 import {
   Separator,
   NotFound,
-  Payment,
   Footer,
   ListPayment,
   FooterApp,
@@ -59,22 +58,22 @@ export default function PaymentPage() {
   }, []);
 
 
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //        const response = await addressCtrl.getAddress(accesToken, user.id);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const data = [];
-        for await (const item of cart) {
-          const response = await productCtrl.getProductById(item.id);
-          data.push({ ...response, quantity: item.quantity });
-        }
-        setProduct(data);
-        setLoad(false);
-      } catch (error) {
-        console.error(`Error: ${error}`);
-      }
-    })();
-  }, [cart]);
+  //        setAddress(response);
+  //        setLoad(false);
+  //     } catch (error) {
+  //       console.error(`Error: ${error}`);
+  //     }
+  //   })();
+  // }, []);
+
+
+
+
 
   return (
     <BasicLayout>
@@ -85,9 +84,8 @@ export default function PaymentPage() {
         <>
           {hasProduct ? (
             <>
-              <ListPayment product={product} address={address} />
-              {/* <Payment product={product} /> */}
-              
+              <ListPayment product={product} address={address} payMethod={'payMethod'} />
+          
               <Footer />
             </>
           ) : (

@@ -9,9 +9,7 @@ export class Address {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-
-         
+          "Content-Type": "application/json",         
         },
         body: JSON.stringify({
           title: data.title,
@@ -27,10 +25,9 @@ export class Address {
       const response = await fetch(url, params);
 
       const result = await response.json();
-      console.log(result);
-
+     
       if (response.status !== 201) {
-        throw new Error("Occurio un error al crear la nueva dirección");
+        throw new Error("Occurio un error al crear una nueva dirección");
       }
       return result;
     } catch (error) {
