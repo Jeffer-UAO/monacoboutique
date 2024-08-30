@@ -20,9 +20,9 @@ console.log(gallery);
         showStatus={false}
         showThumbs={false}
         autoPlay={true}
-        stopOnHover={true}
+        // stopOnHover={true}
         swipeable={false}
-        centerMode={true}
+        // centerMode={true}
         useKeyboardArrows={false}
         showArrows={false}
       >

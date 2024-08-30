@@ -1,14 +1,14 @@
 .carousel_vim {
   
     display: flex;
-    height: 30rem;
+    height: 32rem;
 
      
   img {
-    // object-fit: cover;
+    object-fit: contain;
     object-position: center center;  
-  //    max-width: 600px;
-  // aspect-ratio: 2/2.5;
+    //  max-width: 600px;
+  // aspect-ratio: 1/1.4;
   }
   
   }
