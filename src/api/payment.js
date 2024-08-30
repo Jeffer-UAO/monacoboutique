@@ -12,20 +12,19 @@ export class Payment {
         //   Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          items: items,
-          transaction_amount: amount,          
-        }),
+        body: JSON.stringify(
+          items,
+        //   transaction_amount: amount,          
+        ),
       };
-
    
       const response = await fetch(url, params);
-      console.log(response)
+    //   console.log(response)
 
       const result = await response.json();
 
       if (response.status !== 201) {
-        throw new Error("Occurio un error al crear una nueva dirección");
+        throw new Error("Occurio un error al crear el pago");
       }
       return result;
     } catch (error) {

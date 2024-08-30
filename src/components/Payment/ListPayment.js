@@ -24,10 +24,19 @@ export function ListPayment(props) {
     Array.isArray(address) && address.length > 0 ? address[0] : null
   );
 
-  const payment = async(product, total) => {
-    const response = await paymentCtrl.createPayload(product, total);
-    console.log(response);
-  };
+  const payment = async (product, total) => {
+    try {
+        const response = await paymentCtrl.createPayload(product, total);
+        
+        if (response && response.init_point) {        
+            window.location.href = response.init_point;
+        } else {          
+            console.error('No se recibió una URL válida en la respuesta');
+        }
+    } catch (error) {
+        console.error('Error en el proceso de pago:', error);
+    }
+};
 
   const format = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Cambia 'es-ES' por tu configuración regional
@@ -154,7 +163,7 @@ export function ListPayment(props) {
               <h2>Selecciona una Dirección</h2>
               <hr></hr>
               <ul>
-                {address.map((addres, index) => (
+                {address && address.map((addres, index) => (
                   <div key={index}>
                     <li onClick={() => selectecAddress(addres)}>
                       <h6>{addres.title}</h6>

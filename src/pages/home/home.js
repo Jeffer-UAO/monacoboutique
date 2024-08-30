@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Categories } from "@/api/category";
 import { Products } from "@/api/products";
-import { Videos } from "@/api/videos";
-import { ListCategories, Footer, Promotion, Exclusive, Separator } from "@/components";
+import { SlidersApi } from "@/api/sliders";
+import { ListCategories, Footer, Promotion, Exclusive, Separator, Sliders } from "@/components";
 
 import { BasicLayout } from "../../layouts";
 
 const categoriesCtrl = new Categories();
 const productsCtrl = new Products();
-const videosCtrl = new Videos();
+const slidersCtrl = new SlidersApi();
 
 
 export default function HomePage() {
   const [categories, setCategories] = useState(null);
   const [products, setProducts] = useState(null);
-  const [videos, setVideos] = useState(null);
+  const [sliders, setSliders] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -27,16 +27,16 @@ export default function HomePage() {
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await videosCtrl.getAll();
-        setVideos(response);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const response = await videosCtrl.getAll();
+  //       setVideos(response);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   })();
+  // }, []);
 
 
   useEffect(() => {
@@ -51,12 +51,27 @@ export default function HomePage() {
   }, []);
 
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await slidersCtrl.getAll();
+        setSliders(response);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
+  
+
 
   if (categories !== null) {
     return (
       <>
         <BasicLayout>
          <Separator />
+
+         <Sliders gallery={sliders} /> 
+
           <ListCategories categories={categories} />
 
           {/* <ListVideos videos={videos} /> */}

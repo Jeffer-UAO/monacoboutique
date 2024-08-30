@@ -29,6 +29,7 @@ export class Products {
   }
 
   async getProductsByCategory(idCategory) {
+
     try {
       const productsFilter = `category=${idCategory}`;
 

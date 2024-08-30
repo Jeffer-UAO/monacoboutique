@@ -21,12 +21,10 @@ import Link from "next/link";
 import styles from "./TopBar.module.scss";
 import { Redes } from "@/components/Redes";
 
-
-
 const categoriesCtrl = new Categories();
 
 export function TopBar() {
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState([]);
   const router = useRouter();
   const { total } = useCart();
   const [isOpen, setIsOpen] = useState(false);
@@ -44,11 +42,12 @@ export function TopBar() {
         console.error(error);
       }
     })();
-  }, []);  
-
+  }, []);
 
   function handleClickAdmin() {
-    router.push("https://boutiquemonaco.suprainnovations.store/admin-dashboard/");
+    router.push(
+      "https://boutiquemonaco.suprainnovations.store/admin-dashboard/"
+    );
   }
 
   return (
@@ -83,11 +82,15 @@ export function TopBar() {
       <Redes />
 
       <div className={styles.topbar_category}>
-          {map(categories, (category) => (
-            <p key={category.id}>
-              <Link href={`/products/${category.slug}`}> {category.name} </Link>
-            </p>
-          ))}
+        <p>
+          <Link href="\"> Inicio </Link>
+        </p>
+
+        {map(categories, (category) => (
+          <p key={category.id}>
+            <Link href={`/products/${category.slug}`}> {category.name} </Link>
+          </p>
+        ))}
       </div>
 
       <Modal isOpen={isOpen} toggle={toggleModal}>
@@ -95,9 +98,8 @@ export function TopBar() {
 
         <ModalBody>
           <FormGroup>
-        
-              <p onClick={()=> handleClickAdmin()}>Admin</p>
-         
+            <p onClick={() => handleClickAdmin()}>Admin</p>
+
             {/* <Link href="/">
               <p>Ir a...</p>
             </Link>
@@ -111,7 +113,7 @@ export function TopBar() {
         </ModalBody>
 
         <ModalFooter>
-         <Button color="primary" onClick={toggleModal}></Button>
+          <Button color="primary" onClick={toggleModal}></Button>
         </ModalFooter>
       </Modal>
     </div>

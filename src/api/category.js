@@ -21,8 +21,8 @@ export class Categories {
       const slugFilter = `slug=${slug}`;
       const url = `${BASE_API}/api/category/?${slugFilter}`;
 
-      const response = await fetch(url);   
-
+      const response = await fetch(url);        
+    
       if (!response.ok) {
         const errorDetails = await response.json();
         console.error("Error details:", errorDetails);

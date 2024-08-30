@@ -20,3 +20,4 @@ export * from "./Layout";
  export * from "./LoginFormClient";
  export * from "./Address";
  export * from "./Common";
+ export * from "./Sliders";

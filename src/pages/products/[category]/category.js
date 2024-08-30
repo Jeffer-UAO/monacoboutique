@@ -3,9 +3,11 @@ import { Listproducts, Footer, NotFound, Separator } from "@/components";
 
 import { BasicLayout } from "@/layouts";
 
-export default function category(props) {
+export default function Category(props) {
   const { products, category } = props;
   const hasProduct = size(products) > 0;
+
+console.log(products)
 
   return (
     <BasicLayout>
