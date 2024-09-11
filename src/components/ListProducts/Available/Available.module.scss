@@ -1,4 +1,7 @@
 .list__product {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
   
   button {
     width: 95% !important;
@@ -14,7 +17,7 @@
     object-fit: cover;
     object-position: center center;  
     aspect-ratio: 3/4;    
-    border-radius: 1rem;
+    border-radius: 0.3rem;
   }
 
   h5 {

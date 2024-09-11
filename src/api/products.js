@@ -15,8 +15,9 @@ export class Products {
   }
 
   async getProductById(productId) {
+    const productsFilter = `item_id=${productId}`;
     try {
-      const url = `${BASE_API}/api/products/${productId}/`;
+      const url = `${BASE_API}/api/inventory/?${productsFilter}`;
       const response = await fetch(url);
       const result = await response.json();
 
@@ -28,15 +29,33 @@ export class Products {
     }
   }
 
-  async getProductsByCategory(idCategory) {
-
+  async getProductByCode(codigo) {
+    const productsFilter = `codigo=${codigo}`;
     try {
-      const productsFilter = `category=${idCategory}`;
-
-      const url = `${BASE_API}/api/product_category/?${productsFilter}`;
+      const url = `${BASE_API}/api/inventory/?${productsFilter}`;
       const response = await fetch(url);
       const result = await response.json();
 
+      if (response.status !== 200) throw result;
+   
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  async getProductsByCategory(idCategory) {
+
+    try {
+      const productsFilter = `id_categoria=${idCategory}`;
+
+      // const url = `${BASE_API}/api/product_category/?${productsFilter}`;
+      const url = `${BASE_API}/api/inventory/?${productsFilter}`;
+      const response = await fetch(url);
+      const result = await response.json();
+    
+      
       if (response.status !== 200) throw result;
 
       return result;

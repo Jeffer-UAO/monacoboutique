@@ -12,7 +12,7 @@ export function ListCategories(props) {
 
   return (
     <div className={styles.content}>
-      <h4>CATEGORÍAS</h4>
+      <label>CATEGORÍAS</label>
       <div className={styles.list}>
         {map(categories, (category) => (
           <div key={category.id} className={styles.card}>
@@ -22,26 +22,14 @@ export function ListCategories(props) {
                   alt="Card image cap"
                   src={
                     BASE_NAME + upload + scale + category.image.split(upload)[1]
-                  }
-                  className={styles.skeleton}
-                />
-                <div className={styles.category}>
-                  <CardTitle className={styles.title}>
-                    <h6>{category.name}</h6>
-                    <level>Ver más</level>
-                  </CardTitle>
-                </div>
+                  }                 
+                />                          
+                    <h6>{category.name}</h6>                            
               </Link>
             ) : (
               <Link href={`/products/${category.slug}`}>
-                <CardImg alt="Card image cap" src={category.image_alterna} />
-
-                <div className={styles.category}>
-                  <CardTitle className={styles.title}>
+                <CardImg alt="Card image cap" src={category.image_alterna} />             
                     <h2>{category.name}</h2>
-                    <h6>ver más</h6>
-                  </CardTitle>
-                </div>
               </Link>
             )}
           </div>

@@ -32,7 +32,7 @@ export default function CartPage() {
       try {
         const data = [];
         for await (const item of cart) {
-          const response = await productCtrl.getProductById(item.id);
+          const response = await productCtrl.getProductByCode(item.id);
           data.push({ ...response, quantity: item.quantity });
         }
         setProduct(data);
@@ -43,6 +43,7 @@ export default function CartPage() {
     })();
   }, [cart]);
 
+  
   return (
     <BasicLayout>
       <Separator />
@@ -53,7 +54,7 @@ export default function CartPage() {
           {hasProduct ? (
             <>
               <ListCart product={product} />
-              <FooterApp title1={'Finalizar Compra'} title2={'Continuar Comprando'} />
+              <FooterApp title1={'Finalizar Compra'} title2={'Comprar más'} />
             </>
           ) : (
             <>

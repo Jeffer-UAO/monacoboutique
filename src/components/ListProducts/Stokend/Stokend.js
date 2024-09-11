@@ -15,18 +15,18 @@ export function Stokend(props) {
       <div className={styles.soldout}>
         <span>AGOTADO</span>
       </div>
-      {product.productData.images ? (       
+      {product.images ? (       
           <CardImg
             alt="Card image cap"
-            src={BASE_NAME + product.productData.images}
+            src={BASE_NAME + product.images}
           />
       ) : (
                  <CardImg
             alt="Card image cap"
-            src={product.productData.image_alterna}
+            src={product.image_alterna}
           />       
       )}
-      <h5>{product.productData.name_extend}</h5>    
+      <h5>{product.name}</h5>    
     </div>
   );
 }

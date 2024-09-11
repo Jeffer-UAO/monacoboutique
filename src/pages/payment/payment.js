@@ -26,14 +26,14 @@ export default function PaymentPage() {
   if (!user) {
     window.location.replace("/join/login");
     return null;
-  }
+  }  
 
   useEffect(() => {
     (async () => {
       try {
         const data = [];
         for await (const item of cart) {
-          const response = await productCtrl.getProductById(item.id);
+          const response = await productCtrl.getProductByCode(item.id);
           data.push({ ...response, quantity: item.quantity });
         }
         setProduct(data);

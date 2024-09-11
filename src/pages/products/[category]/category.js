@@ -7,8 +7,6 @@ export default function Category(props) {
   const { products, category } = props;
   const hasProduct = size(products) > 0;
 
-console.log(products)
-
   return (
     <BasicLayout>
       <Separator />

@@ -1,10 +1,10 @@
+import { Products } from "@/api";
 import { useState } from "react";
-import { BASE_NAME } from "@/config/constants";
-import { useCart } from "@/hooks/useCart";
-import { useWhatsApp } from "@/hooks";
 import Link from "next/link";
-import { toast } from "react-toastify";
+import { useWhatsApp } from "@/hooks";
+import { BASE_NAME } from "@/config/constants";
 
+import map from "lodash/map";
 import {
   Button,
   Modal,
@@ -12,25 +12,29 @@ import {
   ModalBody,
   ModalFooter,
   FormGroup,
-  Input,
   CardImg,
 } from "reactstrap";
-
 import { BsWhatsapp } from "react-icons/bs";
-
 import styles from "./Available.module.scss";
+import { SizeColor } from "../SizeColor/SizeColor";
 
 export function Available(props) {
-  const { product } = props;
-  const { addCart } = useCart();
+  const { products } = props;
   const { generateWhatsAppLink, items, selectedItem, handleItemClick } =
     useWhatsApp();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
-  const [quantity, setQuantity] = useState(1);
-  const [idProduct, setIdPropduct] = useState();
+
   const [propductWhatsApp, setPropductWhatsApp] = useState("");
   const [propductAlternaWhatsApp, setPropductAlternaWhatsApp] = useState("");
+  const [propductTC, setPropductTC] = useState([]);
+
+  const productCtrl = new Products();
+
+  const uniqueProducts = products.filter(
+    (product, index, self) =>
+      index === self.findIndex((p) => p.item_id === product.item_id)
+  );
 
   const format = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Cambia 'es-ES' por tu configuración regional
@@ -40,19 +44,13 @@ export function Available(props) {
     setIsOpen(!isOpen);
   };
 
-  const addData = () => {
-    addCart(idProduct, quantity);
-    toast.success("¡Se agrego con exito!");
-    toggleModal();
-  };
 
-  const handleQuantityChange = (event) => {
-    const value = parseInt(event.target.value);
-    setQuantity(value);
-  };
 
-  const addProductId = (id) => {
-    setIdPropduct(id);
+  const addProductId = async (id) => {
+    const newProducts = await productCtrl.getProductById(id);
+    setPropductTC(newProducts);
+
+    // setIdPropduct(id);
     toggleModal();
   };
 
@@ -93,96 +91,78 @@ export function Available(props) {
   };
 
   return (
-    <div className={styles.list__product}>
-      {product.productData.images ? (
-        <Link href={`/${product.productData.slug}`}>
-          <CardImg
-            alt="Card image cap"
-            src={BASE_NAME + product.productData.images}
-          />
-        </Link>
-      ) : (
-        <Link href={`/${product.productData.slug}`}>
-          <CardImg
-            alt="Card image cap"
-            src={product.productData.image_alterna}
-          />
-        </Link>
-      )}
+    <>
+      <div className={styles.list__product}>        
+          {map(uniqueProducts, (product, index) => (
+            <div key={index}>
+              {product.images ? (
+                <Link href={`/${product.slug}`}>
+                  <CardImg
+                    alt="Card image cap"
+                    src={BASE_NAME + product.images}
+                  />
+                </Link>
+              ) : (
+                <Link href={`/${product.slug}`}>
+                  <CardImg alt="Card image cap" src={product.image_alterna} />
+                </Link>
+              )}
 
-      <h5>{product.productData.name_extend}</h5>
-      <div className={styles.product}>
-        <div className={styles.price}>
-          {product.productData.price1 > 0 && (
-            <h6>$ {format(product.productData.price1)}</h6>
-          )}
-         
-        </div>
-      </div>
-    
-      <Button
-        color="primary"
-        onClick={() => addProductId(product.productData.codigo)}
-      >
-        Agregar al Carrito
-      </Button>
-
-      <Modal centered isOpen={isOpen} toggle={toggleModal}>
-        <ModalHeader toggle={toggleModal}>Ingrese Cantidad</ModalHeader>
-
-        <ModalBody>
-          Cantidad
-          <FormGroup>
-            <Input
-              value={quantity}
-              type="number"
-              name="cantidad"
-              id="cantidad"
-              placeholder="Cantidad"
-              onChange={handleQuantityChange}
-            />
-          </FormGroup>
-        </ModalBody>
-
-        <ModalFooter>
-          <Button color="primary" onClick={addData}>
-            Aceptar
-          </Button>{" "}
-          <Button color="secondary" onClick={toggleModal}>
-            Cancelar
-          </Button>
-        </ModalFooter>
-      </Modal>
-
-      <Modal centered isOpen={isOpen2} toggle={toggleModal2}>
-        <ModalHeader toggle={toggleModal2}>Seleccione una Línea</ModalHeader>
-
-        <ModalBody>
-          <FormGroup>
-            {items.map((item, index) => (
+              <h5>{product.name}</h5>
+              <div className={styles.product}>
+                <div className={styles.price}>
+                  {product.price > 0 && <h6>$ {format(product.price)}</h6>}
+                </div>
+              </div>
               <Button
-                size="sm"
-                key={index}
-                color="success"
-                outline
-                className={index === selectedItem ? "selected" : ""}
-                onClick={() => handleItemClick(item)}
+                color="primary"
+                onClick={() => addProductId(product.item_id)}
               >
-                <BsWhatsapp size={20} /> Linea {index + 1}
+                Agregar al Carrito
               </Button>
-            ))}
-          </FormGroup>
-        </ModalBody>
+            </div>
+          ))}
+        
 
-        <ModalFooter>
-          <Button siz="sm" outline color="secondary" onClick={toggleModal2}>
-            Cancelar
-          </Button>
-          <Button size="sm" color="success" onClick={addDataToWhatsApp}>
-            Aceptar
-          </Button>{" "}
-        </ModalFooter>
-      </Modal>
-    </div>
+        <Modal centered isOpen={isOpen} toggle={toggleModal}>
+          <ModalHeader toggle={toggleModal}>Seleccione Talla y Color</ModalHeader>
+          <ModalBody>
+            <SizeColor propductTC={propductTC} toggle={toggleModal} />
+          </ModalBody>          
+        </Modal>
+
+
+
+        <Modal centered isOpen={isOpen2} toggle={toggleModal2}>
+          <ModalHeader toggle={toggleModal2}>Seleccione una Línea</ModalHeader>
+
+          <ModalBody>
+            <FormGroup>
+              {items.map((item, index) => (
+                <Button
+                  size="sm"
+                  key={index}
+                  color="success"
+                  outline
+                  className={index === selectedItem ? "selected" : ""}
+                  onClick={() => handleItemClick(item)}
+                >
+                  <BsWhatsapp size={20} /> Linea {index + 1}
+                </Button>
+              ))}
+            </FormGroup>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button siz="sm" outline color="secondary" onClick={toggleModal2}>
+              Cancelar
+            </Button>
+            <Button size="sm" color="success" onClick={addDataToWhatsApp}>
+              Aceptar
+            </Button>{" "}
+          </ModalFooter>
+        </Modal>
+      </div>
+    </>
   );
 }

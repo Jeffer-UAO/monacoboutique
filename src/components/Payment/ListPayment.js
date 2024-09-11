@@ -44,7 +44,7 @@ export function ListPayment(props) {
 
   // Calcular el subtotal del carrito
   const subtotal = product.reduce(
-    (acc, item) => acc + item.price1 * item.quantity,
+    (acc, item) => acc + item[0].price * item.quantity,
     0
   );
 
@@ -62,8 +62,9 @@ export function ListPayment(props) {
       <div className={styles.totales}>
         <h2>Resumen de Compra</h2>
         <p>Subtotal: $ {format(subtotal)}</p>
+        <p>Envío y manejo:$ 15.000</p>
         <p>Descuento: $ 0</p>
-        <p>Total a Pagar: $ {format(subtotal)}</p>
+        <p>Total a Pagar: $ {format(subtotal+15000)}</p>
       </div>
 
       <div className={styles.totales}>
@@ -108,36 +109,36 @@ export function ListPayment(props) {
       <div className={styles.detalle}>
         <h2>Detalle del pedido</h2>
         {map(product, (item) => (
-          <div key={item.codigo} className={styles.card}>
-            {item.images ? (
+          <div key={item[0].codigo} className={styles.card}>
+            {item[0].images ? (
               <CardImg
                 alt="Card image cap"
-                src={BASE_NAME + item.images}
+                src={BASE_NAME + item[0].images}
                 className={styles.skeleton}
               />
             ) : (
               <CardImg
                 alt="Card image cap"
-                src={item.image_alterna}
+                src={item[0].image_alterna}
                 className={styles.skeleton}
               />
             )}
 
             <div className={styles.detalle}>
-              <p className={styles.name}>{item.name_extend}</p>
+              <p className={styles.name}>{item[0].name}</p>
               <p className={styles.price}>
-                $ {format(item.price1 * item.quantity)}{" "}
+                $ {format(item[0].price * item.quantity)}{" "}
               </p>
 
               <label>
                 <div className={styles.btn}>
                   <AiOutlineMinusCircle
-                    onClick={() => decreaseCart(item.codigo)}
+                    onClick={() => decreaseCart(item[0].codigo)}
                     size={30}
                   />
                   <h5>{item.quantity}</h5>
                   <AiFillPlusCircle
-                    onClick={() => incrementCart(item.codigo)}
+                    onClick={() => incrementCart(item[0].codigo)}
                     size={30}
                   />
                 </div>

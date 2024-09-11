@@ -1,0 +1,40 @@
+.sizeColor {
+   
+    &__container{
+        button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+          }
+          
+          /* Estilo para los botones activos */
+          button.active {
+            background-color: #dadada;
+            color: rgb(0, 0, 0);
+          }
+          
+          /* Estilo para los botones inactivos */
+          button.inactive {
+            background-color: #f3f3f396;
+            color: #6666667d;
+            cursor: not-allowed;
+          }
+          
+          /* Estilo para el botón seleccionado */
+          button.selected {
+            background-color: #8791f9;
+            color: white;
+          }
+    }
+
+
+    p {
+        font-size: 18px;
+        font-family: Arial, sans-serif;
+
+    }
+
+   
+}

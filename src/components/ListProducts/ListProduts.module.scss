@@ -1,17 +1,15 @@
 .listProduct {
-  background-color: #f3f3f3;
+  // background-color: #f3f3f3;
   text-align: center;
   width: 100%;
-  padding: 0 1rem;
+  padding: 1rem;
 
   .product {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
 
-    .data {
-      max-width: 12rem;
-    }
+
+    // .data {
+    //   max-width: 12rem;
+    // }
   }
 
 }
