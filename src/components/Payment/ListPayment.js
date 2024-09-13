@@ -27,7 +27,8 @@ export function ListPayment(props) {
   const payment = async (product, total) => {
     try {
         const response = await paymentCtrl.createPayload(product, total);
-        
+       
+
         if (response && response.init_point) {        
             window.location.href = response.init_point;
         } else {          
