@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useCart } from "@/hooks/useCart";
+import { useAuth } from "@/hooks";
 import { Products } from "@/api/products";
 import {
   Footer,
@@ -9,6 +10,7 @@ import {
   NotFound,
   Redes,
   Separator,
+  LoginFormClient
 } from "@/components";
 import { BasicLayout } from "@/layouts";
 import { size } from "lodash";
@@ -17,6 +19,7 @@ import { BASE_NAME } from "@/config/constants";
 const productCtrl = new Products();
 
 export default function CartPage() {
+  const { user } = useAuth();
   const { cart } = useCart();
   const [product, setProduct] = useState("");
   const [load, setLoad] = useState(true);
@@ -54,7 +57,7 @@ export default function CartPage() {
           {hasProduct ? (
             <>
               <ListCart product={product} />
-              <FooterApp title1={'Finalizar Compra'} title2={'Comprar más'} />
+              <FooterApp title={'Iniciar sesión'} component={<LoginFormClient/>} title1={'Finalizar Compra'} title2={'Comprar más'} user={user} />
             </>
           ) : (
             <>

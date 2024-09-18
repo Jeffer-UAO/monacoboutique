@@ -1,9 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Register } from "../Register";
 
 import { Auth } from "@/api";
 import { useAuth } from "@/hooks";
+
+import { ModalBasic } from "../Common";
 
 import { Input, Label, Button, Form } from "reactstrap";
 import { toast } from "react-toastify";
@@ -11,8 +14,9 @@ import styles from "./LoginFormClient.module.scss";
 
 const authCtrl = new Auth();
 
-export function LoginFormClient() {  
+export function LoginFormClient() {
   const { login } = useAuth();
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -28,15 +32,21 @@ export function LoginFormClient() {
     },
   });
 
-  return (
-    <Form onSubmit={formik.handleSubmit}>
-      <div onClick={() =>  window.location.replace("/")} className={styles.closed}>
-        <Label for="close">X</Label>
-      </div>
+  const toggleModal = () => {
+    setModalOpen(!isModalOpen);
+  };
 
-      <div className={styles.LoginFormClient}>
+  
+
+  return (
+    <>
+      <Form onSubmit={formik.handleSubmit}>
+        {/* <div onClick={() =>  window.location.replace("/")} className={styles.closed}>
+        <Label for="close">X</Label>
+      </div> */}
+
         <div className={styles.loginContent}>
-          <h4>Iniciar Sesión</h4>
+          {/* <h4>Iniciar Sesión</h4> */}
 
           <div className={styles.input}>
             <Label for="title">Correo</Label>
@@ -64,15 +74,21 @@ export function LoginFormClient() {
           <Button block type="submit">
             Continuar
           </Button>
-          <div
-            className={styles.register}
-            onClick={() => window.location.replace("/join/register")}
+
+          <Button
+            block
+            outline
+            onClick={() => toggleModal()}
           >
-            <label>Crear una cuenta</label>
-          </div>
+            Crear una cuenta
+          </Button>
         </div>
-      </div>
-    </Form>
+      </Form>
+
+      <ModalBasic show={isModalOpen} title='Crea una cuenta' > 
+<Register toggleModal={toggleModal} />
+      </ModalBasic>
+    </>
   );
 }
 

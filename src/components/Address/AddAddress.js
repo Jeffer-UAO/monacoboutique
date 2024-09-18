@@ -10,7 +10,9 @@ import styles from "./Address.module.scss";
 
 const addressCtrl = new Address();
 
-export function AddAddress() {
+export function AddAddress(props) {
+  const { toggleModal2 } = props;
+
   const { accesToken, user } = useAuth();
 
   const formik = useFormik({
@@ -21,9 +23,8 @@ export function AddAddress() {
       try {
         await addressCtrl.addAddress(formValue, user.id, accesToken);
 
-        // formik.handleReset();
-       
-         window.location.replace("/address");
+        toggleModal2();
+        toast.success("Address added successfully");
       } catch (error) {
         toast.error(error.message);
       }
@@ -97,7 +98,7 @@ export function AddAddress() {
 function initialValues() {
   return {
     names: "",
-    title: "Casa",
+    title: "",
     address: "",
     city: "",
     celphone: "",

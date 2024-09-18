@@ -47,4 +47,40 @@ export class User {
       throw error;
     }
   }
+
+    async addUserApi(data) {
+    
+      try {
+        const url = `${BASE_API}/api/users/`;
+  
+        // const orderData = {
+        //   cust: 1,
+        //   tipo: "PEDIDO EXTERNO",
+        //   concept: "Venta de productos",
+        //   orderdetData: dataProducts,     
+        // };
+  
+        const params = {
+          method: "POST",
+          headers: {
+            //   Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", 
+          },
+          body: JSON.stringify(data),
+        };
+  
+        const response = await fetch(url, params); 
+        const result = await response.json(); 
+        
+        return result; 
+  
+      } catch (error) {
+        console.error("Error al crear un nuevo usuario:", error); 
+        throw error; 
+      }
+    }
+  
+
+
+  
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Modal, ModalBody, ModalHeader, Button } from "reactstrap";
 import styles from "./ModalBasic.module.scss"
 
 export function ModalBasic(props) {
@@ -7,6 +7,7 @@ export function ModalBasic(props) {
   return (
     <div>
       <Modal
+     
       centered
         toggle={onClose}
         keyboard={true}
@@ -17,6 +18,8 @@ export function ModalBasic(props) {
       >
         {title && <ModalHeader toggle={onClose}>{title}</ModalHeader>}
         <ModalBody>{children}</ModalBody>
+        
+
       </Modal>
     </div>
   );

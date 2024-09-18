@@ -20,6 +20,7 @@ export default function PaymentPage() {
   const { cart } = useCart();
   const [product, setProduct] = useState("");
   const [address, setAddress] = useState("");
+  const [change, setChange] = useState(false);
   const [load, setLoad] = useState(true);
   const hasProduct = size(product) > 0;
 
@@ -27,6 +28,11 @@ export default function PaymentPage() {
     window.location.replace("/join/login");
     return null;
   }  
+
+
+  const addChange = () => {
+    setChange(!change);
+  };
 
   useEffect(() => {
     (async () => {
@@ -55,7 +61,7 @@ export default function PaymentPage() {
         console.error(`Error: ${error}`);
       }
     })();
-  }, []);
+  }, [change]);
 
 
   // useEffect(() => {
@@ -84,7 +90,7 @@ export default function PaymentPage() {
         <>
           {hasProduct ? (
             <>
-              <ListPayment product={product} address={address} payMethod={'payMethod'} />
+              <ListPayment addChange={addChange} product={product} address={address} payMethod={'payMethod'} />
           
               <Footer />
             </>

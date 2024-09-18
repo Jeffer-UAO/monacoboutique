@@ -77,21 +77,21 @@ export function SizeColor({ propductTC, toggle }) {
   return (
     <div className={styles.sizeColor}>
       <div className={styles.sizeColor__container}>
-        <h3>Selecciona una talla:</h3>
+        <h5>Talla:</h5>
         {tallas.map((talla) => (
           <button
             key={talla}
             onClick={() => handleTallaClick(talla)}
             disabled={!availableTallas.includes(talla)}
-            className={`${styles.button} ${
-              selectedTalla === talla ? styles.selected : styles.active
-            } ${!availableTallas.includes(talla) ? styles.inactive : ""}`}
+            className={`${styles.button} 
+            ${selectedTalla === talla ? styles.selected : styles.active}
+            ${!availableTallas.includes(talla) ? styles.inactive : ""}`}
           >
             {talla}
           </button>
         ))}
 
-        <h3>Selecciona un color:</h3>
+        <h5>Color:</h5>
         {colores.map((color) => (
           <button
             key={color}
@@ -104,10 +104,8 @@ export function SizeColor({ propductTC, toggle }) {
             {color}
           </button>
         ))}
-      </div>
 
-      <div>
-        Cantidad
+        <h5>Cantidad</h5>
         <Input
           value={quantity}
           type="number"
@@ -116,15 +114,18 @@ export function SizeColor({ propductTC, toggle }) {
           placeholder="Cantidad"
           onChange={handleQuantityChange}
         />
-      </div>
-
-      <div>
-        <Button color="primary" onClick={addData}>
-          Aceptar
-        </Button>{" "}
-        <Button color="secondary" onClick={toggle}>
-          Cancelar
-        </Button>
+        <div>
+          <Button
+            color="primary"
+            onClick={addData}
+            disabled={!selectedTalla || !selectedColor}
+          >
+            Aceptar
+          </Button>
+          <Button color="secondary" onClick={toggle}>
+            Cancelar
+          </Button>
+        </div>
       </div>
     </div>
   );

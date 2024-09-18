@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
 
+
 import styles from "./FooterApp.module.scss";
 
 import {
@@ -10,10 +11,12 @@ import {
   ModalBody,
   ModalFooter,
   FormGroup,
+  Button
 } from "reactstrap";
 
 export function FooterApp(props) {
-  const { component, title1, title2, link1, link2, modal } = props;
+
+  const { title, component, title1, title2, link1, link2, modal, user } = props;
   const [showModal, setShowModal] = useState(false);
   const { total } = useCart();
 
@@ -21,11 +24,20 @@ export function FooterApp(props) {
     setShowModal(!showModal);
   };
 
+  
   return (
     <div className={styles.btnWhatsapp}>
-      <Link href={link1 ? link1 : "/payment"}>
+
+      {user ? (
+        <Link href={link1 ? link1 : "/payment"}>
         <div className={styles.title1}>{title1}</div>
       </Link>
+      ):(
+        <div onClick={() => toggleModal(true)} className={styles.title1}>
+          {title1}
+        </div>
+      )}
+
 
       {!modal ? (
         <Link href={link2 ? link2 : "/"}>
@@ -38,7 +50,7 @@ export function FooterApp(props) {
       )}
 
       <Modal centered isOpen={showModal} toggle={toggleModal}>
-        <ModalHeader toggle={toggleModal}>Nueva Dirección</ModalHeader>
+        <ModalHeader toggle={toggleModal}>{title}</ModalHeader>
 
         <ModalBody>
           <FormGroup>{component}</FormGroup>

@@ -21,3 +21,4 @@ export * from "./Layout";
  export * from "./Address";
  export * from "./Common";
  export * from "./Sliders";
+ export * from "./Register";
