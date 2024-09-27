@@ -88,7 +88,7 @@ export function ListPayment(props) {
         <h2>Resumen de Compra</h2>
         <p>Subtotal: $ {format(subtotal)}</p>
         <p>Envío y manejo:$ 15.000</p>
-        <p>Descuento: $ 0</p>
+        {/* <p>Descuento: $ 0</p> */}
         <p>Total a Pagar: $ {format(subtotal + 15000)}</p>
       </div>
 

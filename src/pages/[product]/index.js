@@ -7,6 +7,7 @@ export async function getServerSideProps(context) {
 
   const productCtrl = new Products();
   const responseProduct = await productCtrl.getProductBySlug(product);
+  const responseInventory = await productCtrl.getInventoryBySlug(product);
 
   // const responseProductRelate = await productCtrl.getProductByName(
   //   responseProduct[0]?.flag
@@ -15,6 +16,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         product: responseProduct,
+        inventory: responseInventory,
         // relate: responseProductRelate,  
       },
     };

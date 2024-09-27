@@ -37,14 +37,13 @@ export function Available(props) {
   );
 
   const format = (number) => {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Cambia 'es-ES' por tu configuración regional
+    const roundedNumber = Math.round(number);
+    return roundedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-
-
 
   const addProductId = async (id) => {
     const newProducts = await productCtrl.getProductById(id);
@@ -90,11 +89,14 @@ export function Available(props) {
     }
   };
 
+console.log(products);
+
   return (
     <>
-      <div className={styles.list__product}>        
-          {map(uniqueProducts, (product, index) => (
-            <div key={index}>
+      <div className={styles.list__product}>
+        {map(uniqueProducts, (product, index) => (
+          <div key={index}>
+            <div className={styles.image}>
               {product.images ? (
                 <Link href={`/${product.slug}`}>
                   <CardImg
@@ -107,31 +109,28 @@ export function Available(props) {
                   <CardImg alt="Card image cap" src={product.image_alterna} />
                 </Link>
               )}
-
-              <h5>{product.name}</h5>
-              <div className={styles.product}>
-                <div className={styles.price}>
-                  {product.price > 0 && <h6>$ {format(product.price)}</h6>}
-                </div>
-              </div>
-              <Button
-                color="primary"
-                onClick={() => addProductId(product.item_id)}
-              >
-                Agregar al Carrito
-              </Button>
+           
             </div>
-          ))}
-        
+
+            <h5>{product.name}</h5>
+            <div className={styles.product}></div>
+            <Button
+              color="primary"
+              onClick={() => addProductId(product.item_id)}  
+            >
+              Agregar al Carrito
+            </Button>
+          </div>
+        ))}
 
         <Modal centered isOpen={isOpen} toggle={toggleModal}>
-          <ModalHeader toggle={toggleModal}>Seleccione Talla y Color</ModalHeader>
+          <ModalHeader toggle={toggleModal}>
+            Seleccione Talla y Color
+          </ModalHeader>
           <ModalBody>
             <SizeColor propductTC={propductTC} toggle={toggleModal} />
-          </ModalBody>          
+          </ModalBody>
         </Modal>
-
-
 
         <Modal centered isOpen={isOpen2} toggle={toggleModal2}>
           <ModalHeader toggle={toggleModal2}>Seleccione una Línea</ModalHeader>

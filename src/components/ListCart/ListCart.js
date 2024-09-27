@@ -14,10 +14,7 @@ export function ListCart(props) {
   const { decreaseCart, incrementCart, deleteCart } = useCart();
 
   const format = (number) => {
-    // Redondear o eliminar los decimales usando Math.floor
     const integerPart = Math.floor(number);
-    
-    // Aplicar el formato de miles con puntos
     return integerPart.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
@@ -27,16 +24,19 @@ export function ListCart(props) {
     0
   );
 
+  const descuento = product.reduce(
+    (acc, item) => acc + item[0].discount * item.quantity,
+    0
+  );
+
   return (
     <div className={styles.list}>
       <h4>CARRITO</h4>
-   
+
       {map(product, (item) => (
         <div key={item[0].codigo} className={styles.card}>
           <div className={styles.body}>
-
             <div className={styles.body__content}>
-
               <BsTrash3
                 size="20"
                 color="gray"
@@ -58,14 +58,29 @@ export function ListCart(props) {
               )}
 
               <frames className={styles.sizecolor}>
-                <p>Talla <label>{item[0].talla}</label></p>
-                <p>Color <label>{item[0].color}</label></p>
+                <p>
+                  Talla <label>{item[0].talla}</label>
+                </p>
+                <p>
+                  Color <label>{item[0].color}</label>
+                </p>
               </frames>
 
-              <frames className={styles.price}>               
-                <p className={styles.unid}>$ {format(item[0].price)} </p>
+              <frames className={styles.price}>
+                <p className={styles.unid}>
+                  Unidad: $ {format(item[0].price)}{" "}
+                </p>
+                <p className={styles.unid}>SubTotal: $ {format(item[0].price * item.quantity)}</p>
+                {item[0].discount > 0 && (
+                  <p className={styles.unid}>
+                    Descuento:{" "}
+                    <u>$ {format(item[0].discount * item.quantity)}</u>{" "}
+                  </p>
+                )}
+
                 <p className={styles.total}>
-                  $ {format(item[0].price * item.quantity)}
+                  Total: ${" "}
+                  {format((item[0].price - item[0].discount) * item.quantity)}
                 </p>
               </frames>
 
@@ -90,11 +105,14 @@ export function ListCart(props) {
       ))}
 
       <div className={styles.totales}>
-        <p>Subtotal: $ {format(subtotal)}</p>
-        <p>Descuento: $ 0</p>
-        <p>Total: $ {format(subtotal)}</p>
+        <p>SUBTOTAL: $ {format(subtotal)}</p>
+        {descuento > 0 && (
+          <label>
+            <p> DESCUENTO:<u> $ {format(descuento)}</u></p>
+            <p>TOTAL: $ {format(subtotal - descuento)}</p>
+          </label>
+        )}
       </div>
-     
     </div>
   );
 }

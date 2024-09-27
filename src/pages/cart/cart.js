@@ -57,7 +57,7 @@ export default function CartPage() {
           {hasProduct ? (
             <>
               <ListCart product={product} />
-              <FooterApp title={'Iniciar sesión'} component={<LoginFormClient/>} title1={'Finalizar Compra'} title2={'Comprar más'} user={user} />
+              <FooterApp title={'Iniciar sesión'} component={<LoginFormClient/>} title1={'Finalizar Compra'} title2={'Seguir Comprando'} user={user} />
             </>
           ) : (
             <>

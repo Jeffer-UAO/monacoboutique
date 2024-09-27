@@ -1,21 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import map from "lodash/map";
 import { Input, Button } from "reactstrap";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "react-toastify";
 
+import { AiFillPlusCircle } from "react-icons/ai";
+import { AiOutlineMinusCircle } from "react-icons/ai";
+
 import styles from "./SizeColor.module.scss";
 
 export function SizeColor({ propductTC, toggle }) {
-  const { addCart } = useCart();
+  const { addCart, incrementCart, decreaseCart, deleteCart } = useCart();
   const [idProduct, setIdPropduct] = useState();
+  const [productDetail, setProductDetail] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedTalla, setSelectedTalla] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
+
+  const format = (number) => {
+    const roundedNumber = Math.round(number);   
+    return roundedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  
   const tallas = [...new Set(propductTC.map((item) => item.talla))];
   const colores = [...new Set(propductTC.map((item) => item.color))];
 
-  // Filtrar los colores disponibles según la talla seleccionada
+
+
   const availableColors = selectedTalla
     ? [
         ...new Set(
@@ -26,7 +38,6 @@ export function SizeColor({ propductTC, toggle }) {
       ]
     : colores;
 
-  // Filtrar las tallas disponibles según el color seleccionado
   const availableTallas = selectedColor
     ? [
         ...new Set(
@@ -37,10 +48,13 @@ export function SizeColor({ propductTC, toggle }) {
       ]
     : tallas;
 
-  // Manejador de selección de talla
   const handleTallaClick = (talla) => {
-    setSelectedTalla(talla);
-    // Si ya hay un color seleccionado y no está disponible para esta talla, reinicia el color
+    if (selectedTalla === talla) {
+      setSelectedTalla(null);
+    } else {
+      setSelectedTalla(talla);
+    }
+
     if (selectedColor && !availableColors.includes(selectedColor)) {
       setSelectedColor(null);
     }
@@ -48,8 +62,12 @@ export function SizeColor({ propductTC, toggle }) {
 
   // Manejador de selección de color
   const handleColorClick = (color) => {
-    setSelectedColor(color);
-    // Si ya hay una talla seleccionada y no está disponible para este color, reinicia la talla
+    if (selectedColor === color) {
+      setSelectedColor(null);
+    } else {
+      setSelectedColor(color);
+    }
+
     if (selectedTalla && !availableTallas.includes(selectedTalla)) {
       setSelectedTalla(null);
     }
@@ -66,20 +84,56 @@ export function SizeColor({ propductTC, toggle }) {
     const item = getCodigoProducto(selectedTalla, selectedColor);
     addCart(item, quantity);
     toast.success("¡Se agrego con exito!");
-    toggle();
   };
 
-  const handleQuantityChange = (event) => {
-    const value = parseInt(event.target.value);
-    setQuantity(value);
+  const incrementQuantity = () => {
+    if (quantity < 99) {
+      setQuantity(quantity + 1);
+    }
   };
+
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+
+  const getPrecioProducto = (talla, color) => {
+    const productoCoincidente = propductTC.find(
+      (item) => item.talla === talla && item.color === color
+    );
+    return productoCoincidente ? productoCoincidente : null;
+  };
+
+  useEffect(() => {
+    if (selectedTalla && selectedColor) {
+      const product = getPrecioProducto(selectedTalla, selectedColor);
+
+      setProductDetail(product);
+    } else {
+      setProductDetail(0);
+    }
+  }, [selectedTalla, selectedColor]);
+
 
   return (
     <div className={styles.sizeColor}>
+      {productDetail.discount > 0  ? (
+          <div className={styles.price}>
+            <h5> $ {format(productDetail.price - productDetail.discount)}</h5>
+            <h6> $ {format(productDetail.price)}</h6>
+          </div>
+        ):(
+          <div className={styles.price}>
+            <h5> $ {format(productDetail.price)}</h5>
+          </div>
+        )}
       <div className={styles.sizeColor__container}>
-        <h5>Talla:</h5>
+        <h5>Talla</h5>
+        
         {tallas.map((talla) => (
-          <button
+          <Button
             key={talla}
             onClick={() => handleTallaClick(talla)}
             disabled={!availableTallas.includes(talla)}
@@ -88,12 +142,12 @@ export function SizeColor({ propductTC, toggle }) {
             ${!availableTallas.includes(talla) ? styles.inactive : ""}`}
           >
             {talla}
-          </button>
+          </Button>
         ))}
 
-        <h5>Color:</h5>
+        <h5>Color</h5>
         {colores.map((color) => (
-          <button
+          <Button          
             key={color}
             onClick={() => handleColorClick(color)}
             disabled={!availableColors.includes(color)}
@@ -102,28 +156,35 @@ export function SizeColor({ propductTC, toggle }) {
             } ${!availableColors.includes(color) ? styles.inactive : ""}`}
           >
             {color}
-          </button>
+          </Button>
         ))}
 
-        <h5>Cantidad</h5>
-        <Input
-          value={quantity}
-          type="number"
-          name="cantidad"
-          id="cantidad"
-          placeholder="Cantidad"
-          onChange={handleQuantityChange}
-        />
+        <div className={styles.quantity}>
+          <h5>Cantidad</h5>
+
+          <frames>
+            <AiOutlineMinusCircle
+              onClick={decrementQuantity}
+              size={25}
+            />
+            <p>{quantity}</p>
+            <AiFillPlusCircle
+              onClick={incrementQuantity}
+              size={25}
+            />
+          </frames>
+        </div>
+
+        <p>Prendas en promoción no tienen cambio</p>
+
         <div>
           <Button
-            color="primary"
+            size="lg"
+            block           
             onClick={addData}
             disabled={!selectedTalla || !selectedColor}
           >
-            Aceptar
-          </Button>
-          <Button color="secondary" onClick={toggle}>
-            Cancelar
+            Agregar al Carrito
           </Button>
         </div>
       </div>

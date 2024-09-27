@@ -24,9 +24,20 @@
       width: 100%;
     }
 
+    .policies{
+      margin: 1rem;
+      text-align: justify;
+
+      p{
+        font-size: .8em;
+      
+      }
+    }
+
     .title {
       .name_extend {
         text-transform: uppercase;
+        
         // font-size: smaller;
       }
 
@@ -44,6 +55,14 @@
 
     .description {
       position: relative;
+      padding: 1rem;
+      
+
+      p{
+        font-size: 0.8em;
+        text-align: justify;
+        margin: 0.5rem;
+      }
 
       button {
         width: 95% !important;

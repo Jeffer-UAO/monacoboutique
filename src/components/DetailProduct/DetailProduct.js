@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
+
 import { size } from "lodash";
 import { BASE_NAME } from "@/config/constants";
 import { useWhatsApp, useGallery, useCart } from "@/hooks";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
+import { SizeColor } from "../ListProducts";
+import { ChangePolicies } from "../AboutUs";
 
 import { ImageCarousel } from "../ImageCarousel";
 
 import {
   CardImg,
-  CardTitle,
   Button,
   Modal,
   ModalHeader,
   ModalBody,
   ModalFooter,
   FormGroup,
-  Input,
 } from "reactstrap";
 
 import { BsWhatsapp } from "react-icons/bs";
 import styles from "./DetailProduct.module.scss";
 
 export function DetailProduct(props) {
-  const { product, relate } = props;
+  const { product, productInventory, relate } = props;
   const { addCart } = useCart();
   const { getGalleryByCode, gallery } = useGallery();
   const { generateWhatsAppLink, items, selectedItem, handleItemClick } =
@@ -37,6 +38,7 @@ export function DetailProduct(props) {
   const [propductAlternaWhatsApp, setPropductAlternaWhatsApp] = useState("");
   const [quantity, setQuantity] = useState(1);
 
+ 
   const format = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
@@ -52,19 +54,6 @@ export function DetailProduct(props) {
   };
 
   //-----------------------------------------------
-
-  const openCloseModal = () => setShowModal((prev) => !prev);
-
-  const addProductId = (id) => {
-    setIdPropduct(id);
-    openCloseModal();
-  };
-
-  const addData = () => {
-    addCart(idProduct, quantity);
-    toast.success("¡Se agrego con exito!");
-    openCloseModal();
-  };
 
   const handleQuantityChange = (event) => {
     const value = parseInt(event.target.value);
@@ -124,17 +113,7 @@ export function DetailProduct(props) {
             )}
 
             <div className={styles.description}>
-              <CardTitle className={styles.title}>
-                <h5 className={styles.name_extend}>
-                  {productData?.name_extend}
-                </h5>
-                <div className={styles.price}>
-                  {productData?.price1 > 1 && (
-                    <h5>$ {format(productData?.price1)} </h5>
-                  )}
-                  {productData?.price2 > 1 && <h5></h5>}
-                </div>
-              </CardTitle>
+              <h5 className={styles.name_extend}>{productData?.name_extend}</h5>
 
               {productData?.images ? (
                 <div
@@ -171,13 +150,26 @@ export function DetailProduct(props) {
               )}
               {/* <p>Disponible {parseInt(productData?.qty)}</p> */}
 
-              {productData?.price_old > 0 && (
+              {/* {productData?.price_old > 0 && (
                 <h6> $ {format(parseInt(productData?.price_old))}</h6>
-              )}
-              <Button onClick={() => addProductId(productData?.codigo)}>
-                Agregar al Carrito
-              </Button>
+              )} */}
+
               <p>{productData?.description}</p>
+            </div>
+
+            <SizeColor propductTC={productInventory} />
+
+            <div className={styles.policies}>
+              <strong>TIEMPO DE ENTREGA</strong>
+              <ul>
+                <li>
+                  <p>Cali, el mismo día o el siguiente</p>
+                </li>
+                <li>
+                  <p>Nacional, de 4 a 5 días</p>
+                </li>
+              </ul>
+              <ChangePolicies />
             </div>
           </div>
 
@@ -226,33 +218,6 @@ export function DetailProduct(props) {
               ))}
             </div>
           </div> */}
-
-          <Modal centered isOpen={showModal} toggle={openCloseModal}>
-            <ModalHeader toggle={openCloseModal}>Ingrese Cantidad</ModalHeader>
-
-            <ModalBody>
-              Cantidad
-              <FormGroup>
-                <Input
-                  value={quantity}
-                  type="number"
-                  name="cantidad"
-                  id="cantidad"
-                  placeholder="Cantidad"
-                  onChange={handleQuantityChange}
-                />
-              </FormGroup>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button color="primary" onClick={addData}>
-                Aceptar
-              </Button>{" "}
-              <Button color="secondary" onClick={openCloseModal}>
-                Cancelar
-              </Button>
-            </ModalFooter>
-          </Modal>
 
           <Modal centered isOpen={isOpen} toggle={toggleModal}>
             <ModalHeader toggle={toggleModal}>Seleccione una Lìnea</ModalHeader>

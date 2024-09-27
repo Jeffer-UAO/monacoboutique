@@ -3,12 +3,11 @@ import { BASE_API } from "../config/constants";
 export class Payment {
   async createPayload(items, idAddress, token) {
    
-        
     const bodyData = {
       items: items,
       address: idAddress,
     };
-
+    
     try {
       const url = `${BASE_API}/api/payment/`;
       const params = {
