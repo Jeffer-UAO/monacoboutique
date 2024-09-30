@@ -65,9 +65,9 @@ export function FooterApp(props) {
   </div>
 )
 ):(
-  <div onClick={() => toggleModal(true)} className={styles.title1}>
-  {title1}
-</div>
+  <div className={styles.title1} onClick={() => handleClick()}>
+    {title1}
+  </div>
 )}
      
 
