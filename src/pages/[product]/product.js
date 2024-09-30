@@ -11,9 +11,9 @@ export default function ProductPage(props) {
 
   return (
     <div>
+      <FooterApp title1={titel1} title2={titel2} link1={link1} />  
       <DetailProduct product={product} relate={relate} productInventory={inventory} />
      
-      <FooterApp title1={titel1} title2={titel2} link1={link1} />  
     </div>
   );
 }

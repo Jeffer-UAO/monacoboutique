@@ -89,8 +89,6 @@ export function Available(props) {
     }
   };
 
-console.log(products);
-
   return (
     <>
       <div className={styles.list__product}>
@@ -113,7 +111,7 @@ console.log(products);
             </div>
 
             <h5>{product.name}</h5>
-            <div className={styles.product}></div>
+            
             <Button
               color="primary"
               onClick={() => addProductId(product.item_id)}  

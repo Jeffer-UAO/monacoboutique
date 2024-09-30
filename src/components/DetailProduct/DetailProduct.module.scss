@@ -1,14 +1,36 @@
 .detailProduct {
+  position: relative;
   text-align: center;
   width: 100%;
   padding-bottom: 5rem;
+  background-color: white;
+
+  .offer{
+   
+  position: absolute;
+  z-index: 1;
+ 
+    h5{   
+      padding: 0.2rem 1rem;
+      border-radius: 0.9rem;
+
+      // top: -4rem;
+      // right: 1rem;
+      margin: 0.5rem;   
+      background-color: #76be1e;
+      border-radius: 3rem;
+      -webkit-box-shadow: 0px 4px 5px 2px rgba(0, 0, 0, 0.19);
+      -moz-box-shadow: 0px 4px 5px 2px rgba(0, 0, 0, 0.19);
+      box-shadow: 0px 4px 5px 2px rgba(0, 0, 0, 0.19);
+    }
+  }
 
   img {
-    // aspect-ratio: 3/3.3;
+        // aspect-ratio: 9/16;
     object-fit: cover;
     object-position: center center;
     max-width: 40rem;
-    max-height: 40rem;
+    // max-height: 60rem;
   }
 
   h6 {
@@ -18,6 +40,8 @@
 
   .product {
     // background-color: rgba(233, 234, 234, 0.344);
+  
+
     iframe {
       margin: 0;
       padding: 0;

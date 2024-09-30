@@ -9,7 +9,7 @@ import { AiOutlineMinusCircle } from "react-icons/ai";
 
 import styles from "./SizeColor.module.scss";
 
-export function SizeColor({ propductTC, toggle }) {
+export function SizeColor({ propductTC, getOffer, toggle }) {
   const { addCart, incrementCart, decreaseCart, deleteCart } = useCart();
   const [idProduct, setIdPropduct] = useState();
   const [productDetail, setProductDetail] = useState(0);
@@ -17,16 +17,15 @@ export function SizeColor({ propductTC, toggle }) {
   const [selectedTalla, setSelectedTalla] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
 
+  console.log(productDetail);
+
   const format = (number) => {
-    const roundedNumber = Math.round(number);   
+    const roundedNumber = Math.round(number);
     return roundedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  
   const tallas = [...new Set(propductTC.map((item) => item.talla))];
   const colores = [...new Set(propductTC.map((item) => item.color))];
-
-
 
   const availableColors = selectedTalla
     ? [
@@ -98,7 +97,6 @@ export function SizeColor({ propductTC, toggle }) {
     }
   };
 
-
   const getPrecioProducto = (talla, color) => {
     const productoCoincidente = propductTC.find(
       (item) => item.talla === talla && item.color === color
@@ -109,29 +107,32 @@ export function SizeColor({ propductTC, toggle }) {
   useEffect(() => {
     if (selectedTalla && selectedColor) {
       const product = getPrecioProducto(selectedTalla, selectedColor);
-
+      getOffer(product);
       setProductDetail(product);
     } else {
       setProductDetail(0);
     }
   }, [selectedTalla, selectedColor]);
 
-
   return (
     <div className={styles.sizeColor}>
-      {productDetail.discount > 0  ? (
-          <div className={styles.price}>
-            <h5> $ {format(productDetail.price - productDetail.discount)}</h5>
-            <h6> $ {format(productDetail.price)}</h6>
-          </div>
-        ):(
-          <div className={styles.price}>
-            <h5> $ {format(productDetail.price)}</h5>
-          </div>
-        )}
+      {productDetail.discount > 0 ? (
+        <div className={styles.price}>
+          <h5> $ {format(productDetail.price - productDetail.discount)}</h5>
+          <h6> $ {format(productDetail.price)}</h6>
+        </div>
+      ) : productDetail.price ? (
+        <div className={styles.price}>
+          <h5> $ {format(productDetail.price)}</h5>
+        </div>
+      ) : (
+        <div className={styles.price}>
+          <h5> $ ...</h5>
+        </div>
+      )}
+
       <div className={styles.sizeColor__container}>
         <h5>Talla</h5>
-        
         {tallas.map((talla) => (
           <Button
             key={talla}
@@ -147,7 +148,7 @@ export function SizeColor({ propductTC, toggle }) {
 
         <h5>Color</h5>
         {colores.map((color) => (
-          <Button          
+          <Button
             key={color}
             onClick={() => handleColorClick(color)}
             disabled={!availableColors.includes(color)}
@@ -163,15 +164,9 @@ export function SizeColor({ propductTC, toggle }) {
           <h5>Cantidad</h5>
 
           <frames>
-            <AiOutlineMinusCircle
-              onClick={decrementQuantity}
-              size={25}
-            />
+            <AiOutlineMinusCircle onClick={decrementQuantity} size={25} />
             <p>{quantity}</p>
-            <AiFillPlusCircle
-              onClick={incrementQuantity}
-              size={25}
-            />
+            <AiFillPlusCircle onClick={incrementQuantity} size={25} />
           </frames>
         </div>
 
@@ -180,7 +175,7 @@ export function SizeColor({ propductTC, toggle }) {
         <div>
           <Button
             size="lg"
-            block           
+            block
             onClick={addData}
             disabled={!selectedTalla || !selectedColor}
           >

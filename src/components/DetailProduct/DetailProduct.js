@@ -32,13 +32,15 @@ export function DetailProduct(props) {
 
   const [productData, setProductData] = useState(productDetall[0]);
   const [idProduct, setIdPropduct] = useState();
+  const [offer, setOffer] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [propductWhatsApp, setPropductWhatsApp] = useState("");
   const [propductAlternaWhatsApp, setPropductAlternaWhatsApp] = useState("");
   const [quantity, setQuantity] = useState(1);
 
- 
+  console.log(offer);
+
   const format = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
@@ -96,10 +98,20 @@ export function DetailProduct(props) {
     }
   };
 
+  const getOffer = (product) => {
+    setOffer(product.offer);
+  };
+
   if (product) {
     return (
       <>
         <div className={styles.detailProduct}>
+          {offer && (
+            <div className={styles.offer}>
+              <h5>¡OFERTA!</h5>
+            </div>
+          )}
+
           <div className={styles.product} id="seccion-1">
             {size(gallery) > 1 ? (
               <ImageCarousel gallery={gallery} />
@@ -157,7 +169,7 @@ export function DetailProduct(props) {
               <p>{productData?.description}</p>
             </div>
 
-            <SizeColor propductTC={productInventory} />
+            <SizeColor propductTC={productInventory} getOffer={getOffer} />
 
             <div className={styles.policies}>
               <strong>TIEMPO DE ENTREGA</strong>
