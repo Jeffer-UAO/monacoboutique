@@ -70,7 +70,9 @@ export function ListCart(props) {
                 <p className={styles.unid}>
                   Unidad: $ {format(item[0].price)}{" "}
                 </p>
-                <p className={styles.unid}>SubTotal: $ {format(item[0].price * item.quantity)}</p>
+                <p className={styles.unid}>
+                  SubTotal: $ {format(item[0].price * item.quantity)}
+                </p>
                 {item[0].discount > 0 && (
                   <p className={styles.unid}>
                     Descuento:{" "}
@@ -108,10 +110,21 @@ export function ListCart(props) {
         <p>SUBTOTAL: $ {format(subtotal)}</p>
         {descuento > 0 && (
           <label>
-            <p> DESCUENTO:<u> $ {format(descuento)}</u></p>
+            <p>
+              {" "}
+              DESCUENTO:<u> $ {format(descuento)}</u>
+            </p>
             <p>TOTAL: $ {format(subtotal - descuento)}</p>
           </label>
         )}
+      </div>
+
+      <div className={styles.footButton}>
+        <Button block>Finalizar Compra</Button>
+
+        <Button outline block>
+          Seguir comprando
+        </Button>
       </div>
     </div>
   );

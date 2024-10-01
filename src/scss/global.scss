@@ -11,13 +11,13 @@ body {
 h1 {
   margin: 0;
   color: rgb(0, 0, 0);
-  font-family: 'Lucida Sans';
+  font-family: monospace;
 }
 
 h2 {
   margin: 0;
   color: rgb(0, 0, 0);
-  font-family: 'Lucida Sans';
+  font-family: monospace;
 }
 
 
@@ -26,26 +26,34 @@ h4,
 h5 {
   margin: 0;
   color: rgb(0, 0, 0);
-  font-family: 'Lucida Sans';
+  font-family: monospace;
 }
 
 h6 {
   margin: 0;
   color: rgb(0, 0, 0);
-  font-family: 'Lucida Sans';
+  font-family: monospace;
 }
 
 p {
   margin: 0;
   color: rgb(0, 0, 0);
-  font-family: 'Lucida Sans';
+  font-family: monospace;
 }
 
 a:link {
   text-decoration: none;
-  font-family: 'Lucida Sans';
+  font-family: monospace;
 }
 a:visited {
   text-decoration: none;
-  font-family: 'Lucida Sans';
+  font-family: monospace;
+}
+
+label{
+  font-family: monospace;
+}
+
+button{
+  font-family: monospace !important;
 }

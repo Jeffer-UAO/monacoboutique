@@ -1,5 +1,5 @@
 .list {
-  margin-bottom: 4rem;
+  margin: 4rem 1rem 1rem 1rem ;
 
   .totales {
     margin: 1rem;
@@ -67,5 +67,16 @@
     max-width: 4rem;
     object-fit: cover;
     object-position: center center;
+  }
+
+
+  .footButton{
+   
+    button{
+      margin: 1rem 0;
+
+      color: black;
+    }
+   
   }
 }

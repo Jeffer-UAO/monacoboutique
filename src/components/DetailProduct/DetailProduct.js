@@ -23,6 +23,7 @@ import {
 } from "reactstrap";
 
 import { BsWhatsapp } from "react-icons/bs";
+import { CiRead } from "react-icons/ci";
 import styles from "./DetailProduct.module.scss";
 
 export function DetailProduct(props) {
@@ -173,7 +174,7 @@ export function DetailProduct(props) {
             <SizeColor propductTC={productInventory} getOffer={getOffer} />
 
             <div className={styles.policies}>
-              <strong>TIEMPO DE ENTREGA</strong>
+              <p>TIEMPO DE ENTREGA</p>
               <ul>
                 <li>
                   <p>Cali, el mismo día o el siguiente</p>
@@ -184,7 +185,7 @@ export function DetailProduct(props) {
               </ul>
 
               <Link href='/police'>
-                <strong>POLITICAS DE CAMBIO</strong>
+                <p>POLITICAS DE CAMBIO <CiRead /></p>
               </Link>
             </div>
           </div>

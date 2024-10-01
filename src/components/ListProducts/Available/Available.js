@@ -5,9 +5,7 @@ import { useWhatsApp } from "@/hooks";
 import { BASE_NAME } from "@/config/constants";
 
 import map from "lodash/map";
-import {
-  CardImg,
-} from "reactstrap";
+import { CardImg } from "reactstrap";
 import { BsWhatsapp } from "react-icons/bs";
 import styles from "./Available.module.scss";
 import { SizeColor } from "../SizeColor/SizeColor";
@@ -33,17 +31,17 @@ export function Available(props) {
   const uniqueProducts = products.reduce((acc, product) => {
     // Buscar si el producto ya existe en el acumulador por item_id
     const existingProduct = acc.find((p) => p.item_id === product.item_id);
-  
+
     // Garantizar que qty_available sea un número antes de sumar
     const qtyAvailable = Number(product.qty_available) || 0;
-  
+
     if (existingProduct) {
       // Si ya existe, sumar qty_available
       existingProduct.qty_available += qtyAvailable;
-  
+
       // Verificar si discount sigue siendo mayor que 0 para todos los productos
       if (product.discount <= 0) {
-        existingProduct.offer = false;  // Si algún producto no tiene descuento, no está en oferta
+        existingProduct.offer = false; // Si algún producto no tiene descuento, no está en oferta
       }
     } else {
       // Si no existe, agregar el producto y garantizar que qty_available sea un número
@@ -54,10 +52,9 @@ export function Available(props) {
         offer: product.discount > 0,
       });
     }
-  
+
     return acc;
   }, []);
-  
 
   console.log(uniqueProducts);
 
@@ -121,13 +118,11 @@ export function Available(props) {
           <div key={index}>
             {product.qty_available > 1 ? (
               <div className={styles.image}>
-
- {product.offer  && (
-            <div className={styles.offer}>
-              <h5>¡OFERTA!</h5>
-            </div>
-          )}
-
+                {product.offer && (
+                  <div className={styles.offer}>
+                    <h5>¡OFERTA!</h5>
+                  </div>
+                )}
 
                 {product.images ? (
                   <Link href={`/${product.slug}`}>
@@ -145,10 +140,10 @@ export function Available(props) {
                 <h6> $ {format(parseInt(product.price))}</h6>
               </div>
             ) : (
-              <div className={styles.soldout}> 
-              <div className={styles.offer}>
-              <h5>AGOTADO</h5>
-            </div>              
+              <div className={styles.soldout}>
+                <div className={styles.offer}>
+                  <h5>AGOTADO</h5>
+                </div>
                 {product.images ? (
                   <CardImg
                     alt="Card image cap"

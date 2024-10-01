@@ -5,7 +5,7 @@ import styles from "./AboutUs.module.scss";
 export function ChangePolicies() {
   return (
     <>
-      <h2>POLITICAS DE CAMBIO</h2>
+      <h3>POLITICAS DE CAMBIO</h3>
       <div className={styles.police}>
         <br />
         <p>
