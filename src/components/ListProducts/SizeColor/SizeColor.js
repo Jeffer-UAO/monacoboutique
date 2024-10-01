@@ -17,8 +17,6 @@ export function SizeColor({ propductTC, getOffer, toggle }) {
   const [selectedTalla, setSelectedTalla] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
 
-  console.log(productDetail);
-
   const format = (number) => {
     const roundedNumber = Math.round(number);
     return roundedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -104,15 +102,21 @@ export function SizeColor({ propductTC, getOffer, toggle }) {
     return productoCoincidente ? productoCoincidente : null;
   };
 
+
   useEffect(() => {
     if (selectedTalla && selectedColor) {
       const product = getPrecioProducto(selectedTalla, selectedColor);
       getOffer(product);
       setProductDetail(product);
+    } else if (propductTC.length > 0) {
+      // Seleccionar el primer producto de la lista si no hay selección
+      const defaultProduct = propductTC[0];
+      getOffer(defaultProduct);
+      setProductDetail(defaultProduct);
     } else {
       setProductDetail(0);
     }
-  }, [selectedTalla, selectedColor]);
+  }, [selectedTalla, selectedColor, propductTC]);
 
   return (
     <div className={styles.sizeColor}>
@@ -135,6 +139,7 @@ export function SizeColor({ propductTC, getOffer, toggle }) {
         <h5>Talla</h5>
         {tallas.map((talla) => (
           <Button
+            size="sm"
             key={talla}
             onClick={() => handleTallaClick(talla)}
             disabled={!availableTallas.includes(talla)}
@@ -149,6 +154,7 @@ export function SizeColor({ propductTC, getOffer, toggle }) {
         <h5>Color</h5>
         {colores.map((color) => (
           <Button
+            size="sm"
             key={color}
             onClick={() => handleColorClick(color)}
             disabled={!availableColors.includes(color)}
@@ -169,8 +175,7 @@ export function SizeColor({ propductTC, getOffer, toggle }) {
             <AiFillPlusCircle onClick={incrementQuantity} size={25} />
           </frames>
         </div>
-
-        <p>Prendas en promoción no tienen cambio</p>
+        {productDetail.discount > 0 && <p>Prendas en promoción no tienen cambio</p>}
 
         <div>
           <Button

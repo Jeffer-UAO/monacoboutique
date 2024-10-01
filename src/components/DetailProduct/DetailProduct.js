@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import { size } from "lodash";
+import { size, map } from "lodash";
 import { BASE_NAME } from "@/config/constants";
 import { useWhatsApp, useGallery, useCart } from "@/hooks";
 // import { toast } from "react-toastify";
 import { SizeColor } from "../ListProducts";
-import { ChangePolicies } from "../AboutUs";
+import Link from "next/link";
+
+
 
 import { ImageCarousel } from "../ImageCarousel";
 
@@ -17,6 +19,7 @@ import {
   ModalBody,
   ModalFooter,
   FormGroup,
+  CardTitle,
 } from "reactstrap";
 
 import { BsWhatsapp } from "react-icons/bs";
@@ -32,14 +35,12 @@ export function DetailProduct(props) {
 
   const [productData, setProductData] = useState(productDetall[0]);
   const [idProduct, setIdPropduct] = useState();
-  const [offer, setOffer] = useState(false);
+  const [offer, setOffer] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [propductWhatsApp, setPropductWhatsApp] = useState("");
   const [propductAlternaWhatsApp, setPropductAlternaWhatsApp] = useState("");
   const [quantity, setQuantity] = useState(1);
-
-  console.log(offer);
 
   const format = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -99,14 +100,14 @@ export function DetailProduct(props) {
   };
 
   const getOffer = (product) => {
-    setOffer(product.offer);
+    setOffer(product.discount);
   };
 
   if (product) {
     return (
       <>
         <div className={styles.detailProduct}>
-          {offer && (
+          {offer > 0 && (
             <div className={styles.offer}>
               <h5>¡OFERTA!</h5>
             </div>
@@ -181,11 +182,14 @@ export function DetailProduct(props) {
                   <p>Nacional, de 4 a 5 días</p>
                 </li>
               </ul>
-              <ChangePolicies />
+
+              <Link href='/police'>
+                <strong>POLITICAS DE CAMBIO</strong>
+              </Link>
             </div>
           </div>
 
-          {/* <div className={styles.relate}>
+          <div className={styles.relate}>
             <p>PRODUCTOS RELACIONADOS</p>
 
             <div className={styles.list}>
@@ -204,7 +208,7 @@ export function DetailProduct(props) {
                       <div className={styles.name}>
                         <CardTitle>
                           <h5>{product.name_extend}</h5>
-                          <h6>$. {format(product.price1)}</h6>
+                          <h5>$. {format(product.price1)}</h5>
                         </CardTitle>
                       </div>
                     </div>
@@ -221,7 +225,7 @@ export function DetailProduct(props) {
                       <div className={styles.name}>
                         <CardTitle>
                           <h5>{product.name_extend}</h5>
-                          <h6>$. {format(product.price1)}</h6>
+                          <h5>$. {format(product.price1)}</h5>
                         </CardTitle>
                       </div>
                     </div>
@@ -229,7 +233,7 @@ export function DetailProduct(props) {
                 </div>
               ))}
             </div>
-          </div> */}
+          </div>
 
           <Modal centered isOpen={isOpen} toggle={toggleModal}>
             <ModalHeader toggle={toggleModal}>Seleccione una Lìnea</ModalHeader>
@@ -245,7 +249,7 @@ export function DetailProduct(props) {
                     className={index === selectedItem ? "selected" : ""}
                     onClick={() => handleItemClick(item)}
                   >
-                    <BsWhatsapp size={20} /> Linea {index + 1}
+                    <BsWhatsapp size={20} /> WhatsApp MB
                   </Button>
                 ))}
               </FormGroup>

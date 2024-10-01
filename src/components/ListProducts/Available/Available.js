@@ -6,12 +6,6 @@ import { BASE_NAME } from "@/config/constants";
 
 import map from "lodash/map";
 import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  FormGroup,
   CardImg,
 } from "reactstrap";
 import { BsWhatsapp } from "react-icons/bs";
@@ -31,10 +25,41 @@ export function Available(props) {
 
   const productCtrl = new Products();
 
-  const uniqueProducts = products.filter(
-    (product, index, self) =>
-      index === self.findIndex((p) => p.item_id === product.item_id)
-  );
+  // const uniqueProducts = products.filter(
+  //   (product, index, self) =>
+  //     index === self.findIndex((p) => p.item_id === product.item_id)
+  // );
+
+  const uniqueProducts = products.reduce((acc, product) => {
+    // Buscar si el producto ya existe en el acumulador por item_id
+    const existingProduct = acc.find((p) => p.item_id === product.item_id);
+  
+    // Garantizar que qty_available sea un número antes de sumar
+    const qtyAvailable = Number(product.qty_available) || 0;
+  
+    if (existingProduct) {
+      // Si ya existe, sumar qty_available
+      existingProduct.qty_available += qtyAvailable;
+  
+      // Verificar si discount sigue siendo mayor que 0 para todos los productos
+      if (product.discount <= 0) {
+        existingProduct.offer = false;  // Si algún producto no tiene descuento, no está en oferta
+      }
+    } else {
+      // Si no existe, agregar el producto y garantizar que qty_available sea un número
+      acc.push({
+        ...product,
+        qty_available: qtyAvailable,
+        // Inicialmente se asume que está en oferta si tiene descuento
+        offer: product.discount > 0,
+      });
+    }
+  
+    return acc;
+  }, []);
+  
+
+  console.log(uniqueProducts);
 
   const format = (number) => {
     const roundedNumber = Math.round(number);
@@ -94,34 +119,57 @@ export function Available(props) {
       <div className={styles.list__product}>
         {map(uniqueProducts, (product, index) => (
           <div key={index}>
-            <div className={styles.image}>
-              {product.images ? (
-                <Link href={`/${product.slug}`}>
+            {product.qty_available > 1 ? (
+              <div className={styles.image}>
+
+ {product.offer  && (
+            <div className={styles.offer}>
+              <h5>¡OFERTA!</h5>
+            </div>
+          )}
+
+
+                {product.images ? (
+                  <Link href={`/${product.slug}`}>
+                    <CardImg
+                      alt="Card image cap"
+                      src={BASE_NAME + product.images}
+                    />
+                  </Link>
+                ) : (
+                  <Link href={`/${product.slug}`}>
+                    <CardImg alt="Card image cap" src={product.image_alterna} />
+                  </Link>
+                )}
+                <h5>{product.name}</h5>
+                <h6> $ {format(parseInt(product.price))}</h6>
+              </div>
+            ) : (
+              <div className={styles.soldout}> 
+              <div className={styles.offer}>
+              <h5>AGOTADO</h5>
+            </div>              
+                {product.images ? (
                   <CardImg
                     alt="Card image cap"
                     src={BASE_NAME + product.images}
                   />
-                </Link>
-              ) : (
-                <Link href={`/${product.slug}`}>
+                ) : (
                   <CardImg alt="Card image cap" src={product.image_alterna} />
-                </Link>
-              )}
-           
-            </div>
-
-            <h5>{product.name}</h5>
-            
-            <Button
+                )}
+                <h5>{product.name}</h5>
+              </div>
+            )}
+            {/* <Button
               color="primary"
               onClick={() => addProductId(product.item_id)}  
             >
               Agregar al Carrito
-            </Button>
+            </Button> */}
           </div>
         ))}
 
-        <Modal centered isOpen={isOpen} toggle={toggleModal}>
+        {/* <Modal centered isOpen={isOpen} toggle={toggleModal}>
           <ModalHeader toggle={toggleModal}>
             Seleccione Talla y Color
           </ModalHeader>
@@ -158,7 +206,7 @@ export function Available(props) {
               Aceptar
             </Button>{" "}
           </ModalFooter>
-        </Modal>
+        </Modal> */}
       </div>
     </>
   );
