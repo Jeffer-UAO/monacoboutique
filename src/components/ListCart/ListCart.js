@@ -4,14 +4,16 @@ import { map } from "lodash";
 import { BASE_NAME } from "@/config/constants";
 
 import { BsTrash3 } from "react-icons/bs";
-import { AiFillPlusCircle } from "react-icons/ai";
-import { AiOutlineMinusCircle } from "react-icons/ai";
+import { AiFillPlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
+
+import { useRouter } from "next/router";
 
 import styles from "./ListCart.module.scss";
 
 export function ListCart(props) {
   const { product } = props;
   const { decreaseCart, incrementCart, deleteCart } = useCart();
+  const router = useRouter();
 
   const format = (number) => {
     const integerPart = Math.floor(number);
@@ -28,6 +30,16 @@ export function ListCart(props) {
     (acc, item) => acc + item[0].discount * item.quantity,
     0
   );
+
+    const handleHome = () => {
+      router.push('/');
+  };
+
+  const handlePayment = () => {
+    router.push('/payment');
+};
+
+
 
   return (
     <div className={styles.list}>
@@ -120,9 +132,9 @@ export function ListCart(props) {
       </div>
 
       <div className={styles.footButton}>
-        <Button block>Finalizar Compra</Button>
+        <Button block onClick={()=> handlePayment()}>Finalizar Compra</Button>
 
-        <Button outline block>
+        <Button outline block onClick={()=> handleHome()}>
           Seguir comprando
         </Button>
       </div>

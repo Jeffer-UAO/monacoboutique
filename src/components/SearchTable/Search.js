@@ -45,7 +45,7 @@ export function Search(props) {
                     {product.price1 !== null && (
                       <h6>$ {format(product.price1)}</h6>
                     )}
-                    <h5>Disponible: {product.qty}</h5>
+                    {/* <h5>Disponible: {product.qty}</h5> */}
                   </CardTitle>
                 </div>
               </Link>

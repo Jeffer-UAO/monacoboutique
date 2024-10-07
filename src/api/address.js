@@ -13,7 +13,8 @@ export class Address {
         },
         body: JSON.stringify({
           title: data.title,
-          name_lastname: data.names,
+          name: data.name,
+          lastname: data.lastname,
           address: data.address,
           phone: data.celphone,
           city: data.city,

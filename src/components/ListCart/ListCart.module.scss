@@ -1,14 +1,14 @@
 .list {
-  margin: 4rem 1rem 1rem 1rem ;
+  margin: 4rem 1rem ;
 
   .totales {
-    margin: 1rem;
+    margin: 1rem 0;
     text-align: end;
     font-weight: 600;
   }
 
   .card {
-    margin: 1rem;
+   
     border-radius: 0.5rem;
 
     .body {
@@ -37,7 +37,6 @@
 
           .total {
             font-weight: 600;
-
           }
         }
 
@@ -70,11 +69,9 @@
   }
 
 
-  .footButton{
-   
+  .footButton{   
     button{
       margin: 1rem 0;
-
       color: black;
     }
    

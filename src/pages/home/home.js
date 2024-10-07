@@ -39,16 +39,16 @@ export default function HomePage() {
   // }, []);
 
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await productsCtrl.getProducts();
-        setProducts(response);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const response = await productsCtrl.getProducts();
+  //       setProducts(response);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   })();
+  // }, []);
 
 
   useEffect(() => {
@@ -63,7 +63,6 @@ export default function HomePage() {
   }, []);
   
 
-
   if (categories !== null) {
     return (
       <>
@@ -76,9 +75,9 @@ export default function HomePage() {
 
           {/* <ListVideos videos={videos} /> */}
 
-          <Promotion products={products} />
+          {/* <Promotion products={products} />
         
-          <Exclusive products={products} />
+          <Exclusive products={products} /> */}
 
           {/* <FooterApp />*/}
           <Footer /> 

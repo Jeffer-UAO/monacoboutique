@@ -56,7 +56,6 @@ export function Available(props) {
     return acc;
   }, []);
 
-  console.log(uniqueProducts);
 
   const format = (number) => {
     const roundedNumber = Math.round(number);

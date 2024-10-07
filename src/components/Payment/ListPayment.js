@@ -1,12 +1,24 @@
-import React, { useState } from "react";
-import { Payment } from "@/api";
+import React, { useState, useEffect } from "react";
+import { Payment, Auth, User, Address } from "@/api";
 import { useCart, useAuth } from "@/hooks";
 import { map } from "lodash";
-import { Button, CardImg, Modal, ModalBody, ModalHeader } from "reactstrap";
+import {
+  Button,
+  CardImg,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Input,
+  Label,
+  Form,
+  FormGroup,
+} from "reactstrap";
 import { ModalBasic } from "../Common";
 import { AddAddress } from "../Address";
 
-// import { CheckoutForm } from "../CheckoutForm";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Register } from "../Register";
 
 import { BASE_NAME } from "@/config/constants";
 
@@ -16,18 +28,25 @@ import { AiOutlineMinusCircle } from "react-icons/ai";
 import styles from "./ListPayment.module.scss";
 
 const paymentCtrl = new Payment();
+const authCtrl = new Auth();
+const userCtrl = new User();
+const addressCtrl = new Address();
 
 export function ListPayment(props) {
-  const { accesToken } = useAuth();
+  const { accesToken, login, logout, user, loading } = useAuth();
   const { addChange, product, address, payMethod } = props;
   const { decreaseCart, incrementCart, deleteCart } = useCart();
   const [show, setShow] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isModalOpen2, setModalOpen2] = useState(false);
+  const [formData, setFormData] = useState(null);
+  const [newAddress, setNewAddress] = useState(null);
+  // const [initialData, setInitialData] = useState(null);
 
   const [selectedAddress, setSelectedAddress] = useState(
     Array.isArray(address) && address.length > 0 ? address[0] : null
   );
+
 
   const payment = async (product, idAddress) => {
     try {
@@ -82,14 +101,250 @@ export function ListPayment(props) {
     setModalOpen(!isModalOpen);
   };
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await getDataFromDatabase(); // Llama a la función que trae los datos
+  //       setInitialData(response);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  const formik = useFormik({
+    initialValues: initialValues(),
+    validationSchema: Yup.object(validationSchema()),
+    onSubmit: async (formValue) => {
+      try {
+        if (user.email === "hh@gmail.com") {
+          await logout();
+          const { email, password } = formValue;
+        
+          await userCtrl.addUserApi({ email, password });
+          const response = await authCtrl.login({ email, password });
+          await login(response.access);         
+
+          const newAddressData = {
+            title: "Principal",
+            name: formValue.name,
+            lastname: formValue.lastname,
+            celphone: formValue.phone,
+            address: formValue.address,
+            city: formValue.city,
+          };
+          
+          setFormData(newAddressData);
+
+        }else{
+
+          //En caso que ya este logueado
+
+        }
+        //Preguntar si existe un usuario con esos datos -si no crear y logear
+      
+ 
+      } catch (error) {
+        toast.error(error.message);
+      }
+    },
+  });
+
+  const addAdress =async()=>{
+    await addressCtrl.addAddress(formValue, user.id, accesToken);
+  }
+
+  useEffect(() => {
+    const addNewAddress = async () => {
+      if (user && formData) { 
+        try {
+          const response = await addressCtrl.addAddress(formData, user.id, accesToken);
+          // setNewAddress(response);         
+          setFormData(null);
+
+          payment(product, response.id)
+
+        } catch (error) {
+          console.log("Error al agregar la dirección:", error.message);
+        }
+      }
+    };
+  
+    addNewAddress();
+  }, [user, formData, accesToken]); 
+  
+
   return (
     <div className={styles.list}>
-      <div className={styles.totales}>
-        <h2>Resumen de Compra</h2>
-        <p>Subtotal: $ {format(subtotal)}</p>
-        <p>Envío y manejo:$ 15.000</p>
-        {/* <p>Descuento: $ 0</p> */}
-        <p>Total a Pagar: $ {format(subtotal + 15000)}</p>
+      <div className={styles.datosPeronales}>
+        <h2>Finalizar Compra</h2>
+
+        <Form onSubmit={formik.handleSubmit}>
+          <FormGroup floating>
+            <Input
+              id="name"
+              name="name"
+              placeholder="Nombre"
+              type="text"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              error={formik.errors.name}
+            />
+            <Label for="Nombre">Nombre</Label>
+          </FormGroup>{" "}
+          <FormGroup floating>
+            <Input
+              id="lastname"
+              name="lastname"
+              placeholder="Apellido"
+              type="text"
+              value={formik.values.lastname}
+              onChange={formik.handleChange}
+              error={formik.errors.lastname}
+            />
+            <Label for="lastname">Apellido</Label>
+          </FormGroup>{" "}
+          <FormGroup floating>
+            <Input
+              id="phone"
+              name="phone"
+              type="text"
+              placeholder="Teléfono"
+              value={formik.values.phone}
+              onChange={formik.handleChange}
+              error={formik.errors.phone}
+            />
+            <Label for="phono">Teléfono</Label>
+          </FormGroup>{" "}
+          <FormGroup floating>
+            <Input
+              id="password"
+              name="password"
+              type="text"
+              placeholder="Número de Identificacíon"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.errors.password}
+            />
+            <Label for="exampleEmail">Número de Identificación</Label>
+          </FormGroup>{" "}
+          <FormGroup floating>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Correo"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.errors.email}
+            />
+            <Label for="email">Correo</Label>
+          </FormGroup>{" "}
+          <FormGroup floating>
+            <Input
+              id="city"
+              name="city"
+              type="text"
+              placeholder="Ciudad"
+              value={formik.values.city}
+              onChange={formik.handleChange}
+              error={formik.errors.city}
+            />
+            <Label for="city">Ciudad</Label>
+          </FormGroup>{" "}
+          <FormGroup floating>
+            <Input
+              id="address"
+              name="address"
+              type="text"
+              placeholder="Dirección Completa"
+              value={formik.values.address}
+              onChange={formik.handleChange}
+              error={formik.errors.address}
+            />
+            <Label for="address">Dirección Completa</Label>
+          </FormGroup>{" "}
+          <FormGroup floating>
+            <Input
+              id="nota"
+              name="nota"
+              placeholder="Notas del Pedido (Opcional)"
+              type="textarea"
+              value={formik.values.nota}
+              onChange={formik.handleChange}
+              error={formik.errors.nota}
+            />
+            <label for="nota">Notas del Pedido (Opcional)</label>
+          </FormGroup>{" "}
+          <div className={styles.detalle}>
+            <h5>Detalle de la Compra</h5>
+            {map(product, (item) => (
+              <div key={item[0].codigo} className={styles.card}>
+                {item[0].images ? (
+                  <CardImg
+                    alt="Card image cap"
+                    src={BASE_NAME + item[0].images}
+                    className={styles.skeleton}
+                  />
+                ) : (
+                  <CardImg
+                    alt="Card image cap"
+                    src={item[0].image_alterna}
+                    className={styles.skeleton}
+                  />
+                )}
+
+                <div className={styles.detalle}>
+                  <label className={styles.name}>{item[0].name}</label>
+                  <p className={styles.price}>
+                    $ {format(item[0].price * item.quantity)}{" "}
+                  </p>
+
+                  <label>
+                    <div className={styles.btn}>
+                      <AiOutlineMinusCircle
+                        onClick={() => decreaseCart(item[0].codigo)}
+                        size={30}
+                      />
+                      <h5>{item.quantity}</h5>
+                      <AiFillPlusCircle
+                        onClick={() => incrementCart(item[0].codigo)}
+                        size={30}
+                      />
+                    </div>
+                  </label>
+                </div>
+                <hr></hr>
+              </div>
+            ))}
+
+            <div className={styles.totales}>
+              <h2>Resumen de Compra</h2>
+              <p>Subtotal: $ {format(subtotal)}</p>
+              <p>Envío y manejo:$ 15.000</p>
+              {/* <p>Descuento: $ 0</p> */}
+              <p>Total a Pagar: $ {format(subtotal + 15000)}</p>
+            </div>
+
+            <Button block onClick={() => payment("Payment")}>
+              Finalizar Compra
+            </Button>
+          </div>
+          {/* <Button
+            block
+            type="submit"
+            color="secondary"
+            onClick={() => payment(product, selectedAddress?.id)}
+            disabled={!selectedAddress}
+          >
+            Pagar
+          </Button> */}
+          <Button block type="submit" color="secondary">
+            Pagar
+          </Button>
+        </Form>
       </div>
 
       <div className={styles.totales}>
@@ -106,99 +361,10 @@ export function ListPayment(props) {
         ) : (
           <ModalBasic onClose={onClose} show={show} title="Dirección de envio">
             <AddAddress />
-            {/* <Button onClick={() => toggleModal()}>Cerrar</Button> */}
           </ModalBasic>
         )}
         <Button outline onClick={() => toggleModal()}>
           Cambiar Dirección de envio
-        </Button>
-
-        <div className={styles.foot}>
-          <Button
-            block
-            color="primary"
-            onClick={() => payment(product, selectedAddress?.id)}
-            disabled={!selectedAddress} // Deshabilita si no hay selectedAddress
-          >
-            Pagar
-          </Button>
-
-          <Button
-            block
-            outline
-            onClick={() => window.location.replace("/payment")}
-          >
-            Continuar Comprando
-          </Button>
-        </div>
-      </div>
-
-      {/* <div className={styles.totales}>
-        <h2>Método de pago</h2>
-        {selectedAddress ? (
-          <>
-            <p>Método: {selectedAddress.title}</p>
-            <p>Valor: {selectedAddress.name_lastname}</p>           
-          </>
-        ) : (
-          <p>Dirección no disponible</p>
-        )}       
-        <Button outline onClick={() => toggleModal()}>Cambiar</Button>
-      </div> */}
-
-      <hr></hr>
-      <div className={styles.detalle}>
-        <h5>Detalle de la Compra</h5>
-        {map(product, (item) => (
-          <div key={item[0].codigo} className={styles.card}>
-            {item[0].images ? (
-              <CardImg
-                alt="Card image cap"
-                src={BASE_NAME + item[0].images}
-                className={styles.skeleton}
-              />
-            ) : (
-              <CardImg
-                alt="Card image cap"
-                src={item[0].image_alterna}
-                className={styles.skeleton}
-              />
-            )}
-
-            <div className={styles.detalle}>
-              <label className={styles.name}>{item[0].name}</label>
-              <p className={styles.price}>
-                $ {format(item[0].price * item.quantity)}{" "}
-              </p>
-
-              <label>
-                <div className={styles.btn}>
-                  <AiOutlineMinusCircle
-                    onClick={() => decreaseCart(item[0].codigo)}
-                    size={30}
-                  />
-                  <h5>{item.quantity}</h5>
-                  <AiFillPlusCircle
-                    onClick={() => incrementCart(item[0].codigo)}
-                    size={30}
-                  />
-                </div>
-              </label>
-            </div>
-            <hr></hr>
-          </div>
-        ))}
-
-        <Button block onClick={() => payment("Payment")}>
-          Finalizar Compra
-        </Button>
-
-        <Button
-          block
-          color="primary"
-          onClick={() => window.location.replace("/")}
-        >
-          Comprar más
         </Button>
       </div>
 
@@ -248,4 +414,32 @@ export function ListPayment(props) {
       </Modal>
     </div>
   );
+}
+
+function initialValues(data = {}) {
+  return {
+    name: data.name || "",
+    lastname: data.lastname || "",
+    phone: data.phone || "",
+    password: data.password || "",
+    email: data.email || "",
+    city: data.city || "",
+    address: data.address || "",
+    nota: data.nota || "",
+  };
+}
+
+function validationSchema() {
+  return {
+    name: Yup.string().required("Este campo es obligatorio!"),
+    lastname: Yup.string().required("Este campo es obligatorio!"),
+    phone: Yup.string().required("Este campo es obligatorio!"),
+    email: Yup.string()
+      .email("No es un email valido!")
+      .required("Este campo es obligatorio!"),
+    password: Yup.string().required("Este campo es obligatorio!"),
+    city: Yup.string().required("Este campo es obligatorio!"),
+    address: Yup.string().required("Este campo es obligatorio!"),
+    nota: Yup.string(),
+  };
 }

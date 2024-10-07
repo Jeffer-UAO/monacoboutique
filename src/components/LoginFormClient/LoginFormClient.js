@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Register } from "../Register";
@@ -36,15 +36,9 @@ export function LoginFormClient() {
     setModalOpen(!isModalOpen);
   };
 
-  
-
   return (
     <>
       <Form onSubmit={formik.handleSubmit}>
-        {/* <div onClick={() =>  window.location.replace("/")} className={styles.closed}>
-        <Label for="close">X</Label>
-      </div> */}
-
         <div className={styles.loginContent}>
           {/* <h4>Iniciar Sesión</h4> */}
 
@@ -75,18 +69,14 @@ export function LoginFormClient() {
             Continuar
           </Button>
 
-          <Button
-            block
-            outline
-            onClick={() => toggleModal()}
-          >
+          <Button block outline onClick={() => toggleModal()}>
             Crear una cuenta
           </Button>
         </div>
       </Form>
 
-      <ModalBasic show={isModalOpen} title='Crea una cuenta' > 
-<Register toggleModal={toggleModal} />
+      <ModalBasic show={isModalOpen} title="Crea una cuenta">
+        <Register toggleModal={toggleModal} />
       </ModalBasic>
     </>
   );

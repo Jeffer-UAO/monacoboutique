@@ -4,6 +4,7 @@ import {
   SearchTable,
   NotFound,
   Redes,
+  MenuAlterno,
 } from "@/components";
 import { size } from "lodash";
 import { BasicLayout } from "@/layouts";
@@ -16,7 +17,11 @@ export default function FeaturedPage(props) {
   return (
     <>   
         {hasProduct ? (
+          <>
+          <MenuAlterno />
           <SearchTable products={products} />
+          </>
+          
         ) : (
           <NotFound
             title={"No se encontraron productos"}

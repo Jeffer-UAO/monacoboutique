@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useCart, useAuth } from "@/hooks";
-import { Products, Address } from "@/api";
+import { Products, Address, User, Auth } from "@/api";
+
+
 
 import {
   Separator,
@@ -14,9 +16,11 @@ import { size } from "lodash";
 
 const productCtrl = new Products();
 const addressCtrl = new Address();
+const userCtrl = new User();
+const authCtrl = new Auth();
 
 export default function PaymentPage() {
-  const { user, accesToken } = useAuth();
+  const { user, accesToken, login } = useAuth();
   const { cart } = useCart();
   const [product, setProduct] = useState("");
   const [address, setAddress] = useState("");
@@ -24,10 +28,27 @@ export default function PaymentPage() {
   const [load, setLoad] = useState(true);
   const hasProduct = size(product) > 0;
 
-  if (!user) {
-    window.location.replace("/join/login");
-    return null;
-  }  
+  const userTemporal = async() => {   
+      const initialValue = {
+        email: "hh@gmail.com",
+        password: "1452",
+      };    
+
+    try {
+      const response = await authCtrl.login(initialValue);
+      login(response.access);
+      window.location.replace("/payment");
+    } catch (error) {
+      console.log(error.message);      
+    }
+  }
+
+  useEffect(() => {
+    if (!user) {
+      userTemporal();
+    }
+  }, []);  // Dependencia de `user`, para no ejecutar repetidamente
+ 
 
 
   const addChange = () => {
@@ -89,7 +110,7 @@ export default function PaymentPage() {
       ) : (
         <>
           {hasProduct ? (
-            <>
+            <>            
               <ListPayment addChange={addChange} product={product} address={address} payMethod={'payMethod'} />
           
               <Footer />

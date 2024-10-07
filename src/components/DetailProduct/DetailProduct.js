@@ -7,8 +7,6 @@ import { useWhatsApp, useGallery, useCart } from "@/hooks";
 import { SizeColor } from "../ListProducts";
 import Link from "next/link";
 
-
-
 import { ImageCarousel } from "../ImageCarousel";
 
 import {
@@ -33,6 +31,15 @@ export function DetailProduct(props) {
   const { generateWhatsAppLink, items, selectedItem, handleItemClick } =
     useWhatsApp();
   const { ...productDetall } = product ?? {};
+
+  const hasItems = size(relate) > 0;
+
+
+  
+
+
+
+
 
   const [productData, setProductData] = useState(productDetall[0]);
   const [idProduct, setIdPropduct] = useState();
@@ -173,6 +180,55 @@ export function DetailProduct(props) {
 
             <SizeColor propductTC={productInventory} getOffer={getOffer} />
 
+
+            {hasItems && (
+            <div className={styles.relate}>
+              <p>PRODUCTOS RELACIONADOS</p>
+
+              <div className={styles.list}>
+                {map(relate, (product, index) => (
+                  <div key={index}>
+                    {product.images ? (
+                      <div
+                        className={styles.list__product2}
+                        onClick={() => changeDetail(product)}
+                      >
+                        <CardImg
+                          alt="Card image cap"
+                          src={BASE_NAME + product.images}
+                        />
+
+                        <div className={styles.name}>
+                          <CardTitle>
+                            <h5>{product.name_extend}</h5>
+                            <h5>$. {format(product.price1)}</h5>
+                          </CardTitle>
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        className={styles.list__product2}
+                        onClick={() => changeDetail(product)}
+                      >
+                        <CardImg
+                          alt="Card image cap"
+                          src={product.image_alterna}
+                        />
+
+                        <div className={styles.name}>
+                          <CardTitle>
+                            <h5>{product.name_extend}</h5>
+                            <h5>$. {format(product.price1)}</h5>
+                          </CardTitle>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
             <div className={styles.policies}>
               <p>TIEMPO DE ENTREGA</p>
               <ul>
@@ -184,57 +240,15 @@ export function DetailProduct(props) {
                 </li>
               </ul>
 
-              <Link href='/police'>
-                <p>POLITICAS DE CAMBIO <CiRead /></p>
+              <Link href="/police">
+                <p>
+                  POLITICAS DE CAMBIO <CiRead size={30} />
+                </p>
               </Link>
             </div>
           </div>
 
-          <div className={styles.relate}>
-            <p>PRODUCTOS RELACIONADOS</p>
-
-            <div className={styles.list}>
-              {map(relate, (product, index) => (
-                <div key={index}>
-                  {product.images ? (
-                    <div
-                      className={styles.list__product2}
-                      onClick={() => changeDetail(product)}
-                    >
-                      <CardImg
-                        alt="Card image cap"
-                        src={BASE_NAME + product.images}
-                      />
-
-                      <div className={styles.name}>
-                        <CardTitle>
-                          <h5>{product.name_extend}</h5>
-                          <h5>$. {format(product.price1)}</h5>
-                        </CardTitle>
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      className={styles.list__product2}
-                      onClick={() => changeDetail(product)}
-                    >
-                      <CardImg
-                        alt="Card image cap"
-                        src={product.image_alterna}
-                      />
-
-                      <div className={styles.name}>
-                        <CardTitle>
-                          <h5>{product.name_extend}</h5>
-                          <h5>$. {format(product.price1)}</h5>
-                        </CardTitle>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+         
 
           <Modal centered isOpen={isOpen} toggle={toggleModal}>
             <ModalHeader toggle={toggleModal}>Seleccione una Lìnea</ModalHeader>

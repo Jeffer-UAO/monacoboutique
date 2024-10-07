@@ -33,7 +33,7 @@ export function AuthProvider(props) {
   const login = async (token) => {
     try {
       tokenCtrl.setToken(token);
-      setAccesToken(token);
+      setAccesToken(token);      
       const response = await userCtrl.getMeAPi();
       setUser(response);      
       setLoading(false);
@@ -54,6 +54,7 @@ export function AuthProvider(props) {
     user,
     login,
     logout,
+    loading,
   };
 
   if (loading) return null;
