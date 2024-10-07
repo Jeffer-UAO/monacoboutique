@@ -70,6 +70,11 @@
 
 
   .footButton{   
+    button:first-of-type {
+      background-color: #faf8f3;
+      margin: 1rem 0;
+      border: none;
+    }
     button{
       margin: 1rem 0;
       color: black;

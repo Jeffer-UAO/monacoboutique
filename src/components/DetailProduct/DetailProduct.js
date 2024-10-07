@@ -230,7 +230,11 @@ export function DetailProduct(props) {
           )}
 
             <div className={styles.policies}>
+              <strong>
+
               <p>TIEMPO DE ENTREGA</p>
+
+              </strong>
               <ul>
                 <li>
                   <p>Cali, el mismo día o el siguiente</p>
@@ -242,7 +246,11 @@ export function DetailProduct(props) {
 
               <Link href="/police">
                 <p>
+                  <strong>
+
+
                   POLITICAS DE CAMBIO <CiRead size={30} />
+                  </strong>
                 </p>
               </Link>
             </div>

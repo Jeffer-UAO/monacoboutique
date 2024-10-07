@@ -47,7 +47,6 @@ export function ListPayment(props) {
     Array.isArray(address) && address.length > 0 ? address[0] : null
   );
 
-
   const payment = async (product, idAddress) => {
     try {
       const storedInitPoint = localStorage.getItem("init_point");
@@ -122,10 +121,10 @@ export function ListPayment(props) {
         if (user.email === "hh@gmail.com") {
           await logout();
           const { email, password } = formValue;
-        
+
           await userCtrl.addUserApi({ email, password });
           const response = await authCtrl.login({ email, password });
-          await login(response.access);         
+          await login(response.access);
 
           const newAddressData = {
             title: "Principal",
@@ -135,46 +134,45 @@ export function ListPayment(props) {
             address: formValue.address,
             city: formValue.city,
           };
-          
+
           setFormData(newAddressData);
-
-        }else{
-
+        } else {
           //En caso que ya este logueado
-
         }
         //Preguntar si existe un usuario con esos datos -si no crear y logear
-      
- 
       } catch (error) {
         toast.error(error.message);
       }
     },
   });
 
-  const addAdress =async()=>{
+  const addAdress = async () => {
     await addressCtrl.addAddress(formValue, user.id, accesToken);
-  }
+  };
 
   useEffect(() => {
     const addNewAddress = async () => {
-      if (user && formData) { 
+      if (user && formData) {
         try {
-          const response = await addressCtrl.addAddress(formData, user.id, accesToken);
-          // setNewAddress(response);         
+          const response = await addressCtrl.addAddress(
+            formData,
+            user.id,
+            accesToken
+          );
+          // setNewAddress(response);
           setFormData(null);
 
-          payment(product, response.id)
-
+          payment(product, response.id);
         } catch (error) {
           console.log("Error al agregar la dirección:", error.message);
         }
       }
     };
-  
+
     addNewAddress();
-  }, [user, formData, accesToken]); 
-  
+  }, [user, formData, accesToken]);
+
+  console.log(product);
 
   return (
     <div className={styles.list}>
@@ -301,6 +299,9 @@ export function ListPayment(props) {
                   <p className={styles.price}>
                     $ {format(item[0].price * item.quantity)}{" "}
                   </p>
+                  {/* <p className={styles.price}>
+                   - $ {format(item[0].discount * item.quantity)}
+                  </p> */}
 
                   <label>
                     <div className={styles.btn}>
