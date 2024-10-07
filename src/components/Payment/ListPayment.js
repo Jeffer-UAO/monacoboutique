@@ -329,9 +329,9 @@ export function ListPayment(props) {
               <p>Total a Pagar: $ {format(subtotal + 15000)}</p>
             </div>
 
-            <Button block onClick={() => payment("Payment")}>
+            {/* <Button block onClick={() => payment("Payment")}>
               Finalizar Compra
-            </Button>
+            </Button> */}
           </div>
           {/* <Button
             block
