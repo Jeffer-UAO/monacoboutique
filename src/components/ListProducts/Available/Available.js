@@ -56,7 +56,6 @@ export function Available(props) {
     return acc;
   }, []);
 
-
   const format = (number) => {
     const roundedNumber = Math.round(number);
     return roundedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -115,7 +114,7 @@ export function Available(props) {
       <div className={styles.list__product}>
         {map(uniqueProducts, (product, index) => (
           <div key={index}>
-            {product.qty_available > 1 ? (
+            {product.qty_available > 0 ? (
               <div className={styles.image}>
                 {product.offer && (
                   <div className={styles.offer}>
@@ -127,12 +126,12 @@ export function Available(props) {
                   <Link href={`/${product.slug}`}>
                     <CardImg
                       alt="Card image cap"
-                      src={BASE_NAME + product.images}
+                      src={BASE_NAME + product.product.images}
                     />
                   </Link>
                 ) : (
                   <Link href={`/${product.slug}`}>
-                    <CardImg alt="Card image cap" src={product.image_alterna} />
+                    <CardImg alt="Card image cap" src={product.product.image_alterna} />
                   </Link>
                 )}
                 <h5>{product.name}</h5>
@@ -146,10 +145,10 @@ export function Available(props) {
                 {product.images ? (
                   <CardImg
                     alt="Card image cap"
-                    src={BASE_NAME + product.images}
+                    src={BASE_NAME + product.product.images}
                   />
                 ) : (
-                  <CardImg alt="Card image cap" src={product.image_alterna} />
+                  <CardImg alt="Card image cap" src={product.product.image_alterna} />
                 )}
                 <h5>{product.name}</h5>
               </div>

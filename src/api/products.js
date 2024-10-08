@@ -55,8 +55,7 @@ export class Products {
       // const url = `${BASE_API}/api/product_category/?${productsFilter}`;
       const url = `${BASE_API}/api/inventory/?${productsFilter}`;
       const response = await fetch(url);
-      const result = await response.json();
-    
+      const result = await response.json();    
       
       if (response.status !== 200) throw result;
 

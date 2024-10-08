@@ -34,13 +34,6 @@ export function DetailProduct(props) {
 
   const hasItems = size(relate) > 0;
 
-
-  
-
-
-
-
-
   const [productData, setProductData] = useState(productDetall[0]);
   const [idProduct, setIdPropduct] = useState();
   const [offer, setOffer] = useState(0);
@@ -180,60 +173,62 @@ export function DetailProduct(props) {
 
             <SizeColor propductTC={productInventory} getOffer={getOffer} />
 
-
             {hasItems && (
-            <div className={styles.relate}>
-              <p>PRODUCTOS RELACIONADOS</p>
+              <div className={styles.relate}>
+                <p>PRODUCTOS RELACIONADOS</p>
 
-              <div className={styles.list}>
-                {map(relate, (product, index) => (
-                  <div key={index}>
-                    {product.images ? (
-                      <div
-                        className={styles.list__product2}
-                        onClick={() => changeDetail(product)}
-                      >
-                        <CardImg
-                          alt="Card image cap"
-                          src={BASE_NAME + product.images}
-                        />
+                <div className={styles.list}>
+                  {map(
+                    relate.filter(
+                      (product) => product.codigo !== productData.codigo
+                    ), // Filtrar productos
+                    (product, index) => (
+                      <div key={index}>
+                        {product.images ? (
+                          <div
+                            className={styles.list__product2}
+                            onClick={() => changeDetail(product)}
+                          >
+                            <CardImg
+                              alt="Card image cap"
+                              src={BASE_NAME + product.images}
+                            />
 
-                        <div className={styles.name}>
-                          <CardTitle>
-                            <h5>{product.name_extend}</h5>
-                            <h5>$. {format(product.price1)}</h5>
-                          </CardTitle>
-                        </div>
+                            <div className={styles.name}>
+                              <CardTitle>
+                                <h5>{product.name_extend}</h5>
+                                <h5>$. {format(product.price1)}</h5>
+                              </CardTitle>
+                            </div>
+                          </div>
+                        ) : (
+                          <div
+                            className={styles.list__product2}
+                            onClick={() => changeDetail(product)}
+                          >
+                            <CardImg
+                              alt="Card image cap"
+                              src={product.image_alterna}
+                            />
+
+                            <div className={styles.name}>
+                              <CardTitle>
+                                <h5>{product.name_extend}</h5>
+                                <h5>$. {format(product.price1)}</h5>
+                              </CardTitle>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    ) : (
-                      <div
-                        className={styles.list__product2}
-                        onClick={() => changeDetail(product)}
-                      >
-                        <CardImg
-                          alt="Card image cap"
-                          src={product.image_alterna}
-                        />
-
-                        <div className={styles.name}>
-                          <CardTitle>
-                            <h5>{product.name_extend}</h5>
-                            <h5>$. {format(product.price1)}</h5>
-                          </CardTitle>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                    )
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
             <div className={styles.policies}>
               <strong>
-
-              <p>TIEMPO DE ENTREGA</p>
-
+                <p>TIEMPO DE ENTREGA</p>
               </strong>
               <ul>
                 <li>
@@ -247,16 +242,12 @@ export function DetailProduct(props) {
               <Link href="/police">
                 <p>
                   <strong>
-
-
-                  POLITICAS DE CAMBIO <CiRead size={30} />
+                    POLITICAS DE CAMBIO <CiRead size={30} />
                   </strong>
                 </p>
               </Link>
             </div>
           </div>
-
-         
 
           <Modal centered isOpen={isOpen} toggle={toggleModal}>
             <ModalHeader toggle={toggleModal}>Seleccione una Lìnea</ModalHeader>
