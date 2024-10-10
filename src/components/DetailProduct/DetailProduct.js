@@ -165,7 +165,7 @@ export function DetailProduct(props) {
               )}
               {/* <p>Disponible {parseInt(productData?.qty)}</p> */}
 
-              {productData?.price_old > 0 && (
+              {productData?.price1 > 0 && (
                 <h5> $ {format(parseInt(productData?.price1))}</h5>
               )}
 

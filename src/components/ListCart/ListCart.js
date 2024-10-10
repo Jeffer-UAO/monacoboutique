@@ -22,80 +22,83 @@ export function ListCart(props) {
 
   // Calcular el subtotal del carrito
   const subtotal = product.reduce(
-    (acc, item) => acc + item[0].price1 * item.quantity,
+    (acc, item) => acc + item[0]?.price1 * item.quantity,
     0
   );
 
   const descuento = product.reduce(
-    (acc, item) => acc + item[0].discount * item.quantity,
+    (acc, item) => acc + (item[0]?.product.price_old - item[0]?.product.price1) * item.quantity,
     0
   );
 
-    const handleHome = () => {
-      router.push('/');
+  console.log(product);
+
+  
+  const handleHome = () => {
+    router.push("/");
   };
 
   const handlePayment = () => {
-    router.push('/payment');
-};
-
-
+    router.push("/payment");
+  };
 
   return (
     <div className={styles.list}>
       <h4>CARRITO</h4>
 
       {map(product, (item) => (
-        <div key={item[0].codigo} className={styles.card}>
+        <div key={item[0]?.codigo} className={styles.card}>
           <div className={styles.body}>
             <div className={styles.body__content}>
               <BsTrash3
                 size="20"
                 color="gray"
-                onClick={() => deleteCart(item[0].codigo)}
+                onClick={() => deleteCart(item[0]?.codigo)}
               />
 
-              {item[0].images ? (
+              {item[0]?.images ? (
                 <CardImg
                   alt="Card image cap"
-                  src={BASE_NAME + item[0].images}
+                  src={BASE_NAME + item[0]?.images}
                   className={styles.skeleton}
                 />
               ) : (
                 <CardImg
                   alt="Card image cap"
-                  src={item[0].image_alterna}
+                  src={item[0]?.image_alterna}
                   className={styles.skeleton}
                 />
               )}
 
               <frames className={styles.sizecolor}>
                 <p>
-                  Talla <label>{item[0].talla}</label>
+                  Talla <label>{item[0]?.talla}</label>
                 </p>
                 <p>
-                  Color <label>{item[0].color}</label>
+                  Color <label>{item[0]?.color}</label>
                 </p>
               </frames>
 
               <frames className={styles.price}>
                 <p className={styles.unid}>
-                  Unidad: $ {format(item[0].price1)}{" "}
+                  Unidad: $ {format(item[0]?.price1)}{" "}
                 </p>
                 <p className={styles.unid}>
-                  SubTotal: $ {format(item[0].price1 * item.quantity)}
+                  SubTotal: $ {format(item[0]?.price1 * item.quantity)}
                 </p>
-                {item[0].discount > 0 && (
+                {item[0]?.product.price_old > 0 && (
                   <p className={styles.unid}>
                     Descuento:{" "}
-                    <u>$ {format(item[0].discount * item.quantity)}</u>{" "}
+                    <u>$ {format((item[0]?.product.price_old - item[0]?.product.price1) * item.quantity)}</u>{" "}
                   </p>
                 )}
 
-                <p className={styles.total}>
+                {/* <p className={styles.total}>
                   Total: ${" "}
-                  {format((item[0].price1 - item[0].discount) * item.quantity)}
-                </p>
+                  {format(
+                    (item[0]?.product.price_old - item[0]?.product.price1) * item.quantity
+                  )}
+                </p> */}
               </frames>
 
               <frames className={styles.button}>
@@ -113,7 +116,7 @@ export function ListCart(props) {
           </div>
 
           <div className={styles.foot}>
-            <p className={styles.name}>{item[0].name}</p>
+            <p className={styles.name}>{item[0]?.name}</p>
           </div>
         </div>
       ))}
@@ -132,9 +135,11 @@ export function ListCart(props) {
       </div>
 
       <div className={styles.footButton}>
-        <Button block onClick={()=> handlePayment()}>Finalizar Compra</Button>
+        <Button block onClick={() => handlePayment()}>
+          Finalizar Compra
+        </Button>
 
-        <Button outline block onClick={()=> handleHome()}>
+        <Button outline block onClick={() => handleHome()}>
           Seguir comprando
         </Button>
       </div>
