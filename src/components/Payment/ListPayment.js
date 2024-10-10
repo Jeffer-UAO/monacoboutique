@@ -91,7 +91,7 @@ export function ListPayment(props) {
 
   // Calcular el subtotal del carrito
   const subtotal = product.reduce(
-    (acc, item) => acc + item[0].price1 * item.quantity,
+    (acc, item) => acc + item[0]?.price1 * item.quantity,
     0
   );
 
@@ -210,6 +210,10 @@ export function ListPayment(props) {
       }
     };
 
+
+    console.log(address);
+    
+
     addNewAddress();
   }, [ formData]);
 
@@ -219,7 +223,7 @@ export function ListPayment(props) {
         <h2>Finalizar Compra</h2>
 
         <Form onSubmit={formik.handleSubmit}>
-          {(address[0]?.name === "Apellidos" || address[0]?.name === "") && (
+        {(address.length < 1 || (address[0]?.name === "Apellidos")) && (
             <>
               <FormGroup floating>
                 <Input
@@ -322,25 +326,25 @@ export function ListPayment(props) {
           <div className={styles.detalle}>
             {/* <h5>Detalle de la Compra</h5> */}
             {map(product, (item) => (
-              <div key={item[0].codigo} className={styles.card}>
-                {item[0].images ? (
+              <div key={item[0]?.codigo} className={styles.card}>
+                {item[0]?.images ? (
                   <CardImg
                     alt="Card image cap"
-                    src={BASE_NAME + item[0].images}
+                    src={BASE_NAME + item[0]?.images}
                     className={styles.skeleton}
                   />
                 ) : (
                   <CardImg
                     alt="Card image cap"
-                    src={item[0].image_alterna}
+                    src={item[0]?.image_alterna}
                     className={styles.skeleton}
                   />
                 )}
 
                 <div className={styles.detalle}>
-                  <label className={styles.name}>{item[0].name}</label>
+                  <label className={styles.name}>{item[0]?.name}</label>
                   <p className={styles.price}>
-                    $ {format(item[0].price1 * item.quantity)}{" "}
+                    $ {format(item[0]?.price1 * item.quantity)}{" "}
                   </p>
                   {/* <p className={styles.price}>
                    - $ {format(item[0].discount * item.quantity)}
@@ -349,12 +353,12 @@ export function ListPayment(props) {
                   <label>
                     <div className={styles.btn}>
                       <AiOutlineMinusCircle
-                        onClick={() => decreaseCart(item[0].codigo)}
+                        onClick={() => decreaseCart(item[0]?.codigo)}
                         size={30}
                       />
                       <h5>{item.quantity}</h5>
                       <AiFillPlusCircle
-                        onClick={() => incrementCart(item[0].codigo)}
+                        onClick={() => incrementCart(item[0]?.codigo)}
                         size={30}
                       />
                     </div>
