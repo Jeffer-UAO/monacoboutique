@@ -22,7 +22,7 @@ export function ListCart(props) {
 
   // Calcular el subtotal del carrito
   const subtotal = product.reduce(
-    (acc, item) => acc + item[0].price * item.quantity,
+    (acc, item) => acc + item[0].price1 * item.quantity,
     0
   );
 
@@ -80,10 +80,10 @@ export function ListCart(props) {
 
               <frames className={styles.price}>
                 <p className={styles.unid}>
-                  Unidad: $ {format(item[0].price)}{" "}
+                  Unidad: $ {format(item[0].price1)}{" "}
                 </p>
                 <p className={styles.unid}>
-                  SubTotal: $ {format(item[0].price * item.quantity)}
+                  SubTotal: $ {format(item[0].price1 * item.quantity)}
                 </p>
                 {item[0].discount > 0 && (
                   <p className={styles.unid}>
@@ -94,7 +94,7 @@ export function ListCart(props) {
 
                 <p className={styles.total}>
                   Total: ${" "}
-                  {format((item[0].price - item[0].discount) * item.quantity)}
+                  {format((item[0].price1 - item[0].discount) * item.quantity)}
                 </p>
               </frames>
 

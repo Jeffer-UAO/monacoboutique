@@ -17,6 +17,8 @@ export class Address {
           lastname: data.lastname,
           address: data.address,
           phone: data.celphone,
+          email: data.email,
+          password: data.password,
           city: data.city,
           country: "Colombia",
           user: idUser,

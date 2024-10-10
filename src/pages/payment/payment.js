@@ -75,8 +75,7 @@ export default function PaymentPage() {
     (async () => {
       try {
          const response = await addressCtrl.getAddress(accesToken, user.id);
-
-         setAddress(response);
+         setAddress(response);                 
          setLoad(false);
       } catch (error) {
         console.error(`Error: ${error}`);

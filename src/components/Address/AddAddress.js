@@ -46,12 +46,22 @@ export function AddAddress(props) {
         </div>
         <div className={styles.input}>
           <Input
-            name="names"
+            name="name"
             type="text"
-            placeholder="Nombre Completo"
-            value={formik.values.names}
+            placeholder="Nombres"
+            value={formik.values.name}
             onChange={formik.handleChange}
-            error={formik.errors.names}
+            error={formik.errors.name}
+          />
+        </div>
+        <div className={styles.input}>
+          <Input
+            name="lastname"
+            type="text"
+            placeholder="Apellidos"
+            value={formik.values.lastname}
+            onChange={formik.handleChange}
+            error={formik.errors.lastname}
           />
         </div>
         <div className={styles.input}>
@@ -86,6 +96,16 @@ export function AddAddress(props) {
             error={formik.errors.celphone}
           />
         </div>
+        <div className={styles.input}>
+          <Input
+            type="text"
+            name="email"
+            placeholder="Correo"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.errors.email}
+          />
+        </div>
 
         <Button block type="submit">
           Guardar
@@ -97,20 +117,24 @@ export function AddAddress(props) {
 
 function initialValues() {
   return {
-    names: "",
     title: "",
+    name: "",
+    lastname: "",
     address: "",
     city: "",
     celphone: "",
+    email: "",
   };
 }
 
 function validationSchema() {
   return Yup.object({
-    names: Yup.string().required(true),
     title: Yup.string().required(true),
+    name: Yup.string().required(true),
+    lastname: Yup.string().required(true),
     address: Yup.string().required(true),
     city: Yup.string().required(true),
+    email: Yup.string().required(true),
     celphone: Yup.string().required(true),
   });
 }

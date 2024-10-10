@@ -116,11 +116,14 @@ export function Available(props) {
           <div key={index}>
             {product.qty_available > 0 ? (
               <div className={styles.image}>
-                {product.offer && (
+                {product.price_old > product.price1 && (
                   <div className={styles.offer}>
                     <h5>¡OFERTA!</h5>
                   </div>
                 )}
+
+
+                
 
                 {product.images ? (
                   <Link href={`/${product.slug}`}>
@@ -131,11 +134,18 @@ export function Available(props) {
                   </Link>
                 ) : (
                   <Link href={`/${product.slug}`}>
-                    <CardImg alt="Card image cap" src={product.product.image_alterna} />
+                    <CardImg
+                      alt="Card image cap"
+                      src={product.product.image_alterna}
+                    />
                   </Link>
                 )}
                 <h5>{product.name}</h5>
-                <h6> $ {format(parseInt(product.price))}</h6>
+                <h5> $ {format(parseInt(product.price1))}</h5>
+
+                {product.price_old > 0 && (
+                  <h6> $ {format(parseInt(product.price_old))}</h6>
+                )}
               </div>
             ) : (
               <div className={styles.soldout}>
@@ -148,7 +158,10 @@ export function Available(props) {
                     src={BASE_NAME + product.product.images}
                   />
                 ) : (
-                  <CardImg alt="Card image cap" src={product.product.image_alterna} />
+                  <CardImg
+                    alt="Card image cap"
+                    src={product.product.image_alterna}
+                  />
                 )}
                 <h5>{product.name}</h5>
               </div>

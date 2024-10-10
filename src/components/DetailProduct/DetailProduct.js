@@ -101,14 +101,15 @@ export function DetailProduct(props) {
   };
 
   const getOffer = (product) => {
-    setOffer(product.discount);
+    // setOffer(product.discount);
+    setOffer(product);
   };
 
   if (product) {
     return (
       <>
         <div className={styles.detailProduct}>
-          {offer > 0 && (
+          {offer.price_old > offer.price1 && (
             <div className={styles.offer}>
               <h5>¡OFERTA!</h5>
             </div>
@@ -164,9 +165,13 @@ export function DetailProduct(props) {
               )}
               {/* <p>Disponible {parseInt(productData?.qty)}</p> */}
 
-              {/* {productData?.price_old > 0 && (
+              {productData?.price_old > 0 && (
+                <h5> $ {format(parseInt(productData?.price1))}</h5>
+              )}
+
+              {productData?.price_old > 0 && (
                 <h6> $ {format(parseInt(productData?.price_old))}</h6>
-              )} */}
+              )}
 
               <p>{productData?.description}</p>
             </div>

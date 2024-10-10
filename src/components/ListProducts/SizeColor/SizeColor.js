@@ -120,7 +120,7 @@ export function SizeColor({ propductTC, getOffer, toggle }) {
 
   return (
     <div className={styles.sizeColor}>
-      {productDetail.discount > 0 ? (
+      {/* {productDetail.discount > 0 ? (
         <div className={styles.price}>
           <h5> $ {format(productDetail.price - productDetail.discount)}</h5>
           <h6> $ {format(productDetail.price)}</h6>
@@ -133,7 +133,7 @@ export function SizeColor({ propductTC, getOffer, toggle }) {
         <div className={styles.price}>
           <h5> $ ...</h5>
         </div>
-      )}
+      )} */}
 
       <div className={styles.sizeColor__container}>
         <h5>Talla</h5>
