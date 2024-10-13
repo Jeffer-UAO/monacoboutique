@@ -42,9 +42,9 @@ export function ListPayment(props) {
     if (!address[0]?.city || address[0]?.city === "") {
       return 0; // Si no hay ciudad, el valor inicial es 0
     } else if (address[0]?.city.toLowerCase() === "cali") {
-      return 15000; // Si la ciudad es "Cali", el valor inicial es 15000
+      return 12000; // Si la ciudad es "Cali", el valor inicial es 12000
     } else {
-      return 20000; // Para cualquier otra ciudad, el valor inicial es 20000
+      return 15000; // Para cualquier otra ciudad, el valor inicial es 15000
     }
   });
   const [isModalOpen2, setModalOpen2] = useState(false);
@@ -57,7 +57,7 @@ export function ListPayment(props) {
   );
 
   
-  const payment = async (product, idAddress) => {
+  const payment = async (product, address) => {
 
     try {
       const storedInitPoint = localStorage.getItem("init_point");
@@ -69,7 +69,7 @@ export function ListPayment(props) {
 
       const response = await paymentCtrl.createPayload(
         product,
-        idAddress,
+        address,
         accesToken
       );
 
@@ -154,7 +154,7 @@ export function ListPayment(props) {
           setFormData(newAddressData);
         } else {
          
-          payment(product, address[0].id);
+          payment(product, address);
         }
       } catch (error) {
         toast.error(error.message);
@@ -171,9 +171,9 @@ export function ListPayment(props) {
     if (!city || city === "") {
       return 0; // Si la ciudad está vacía, retorna 0
     } else if (city.toLowerCase() === "cali") {
-      return 15000; // Si es Cali, retorna 15000
+      return 12000; // Si es Cali, retorna 12000
     } else {
-      return 20000; // Para cualquier otra ciudad, retorna 20000
+      return 15000; // Para cualquier otra ciudad, retorna 15000
     }
   };
 
@@ -210,9 +210,6 @@ export function ListPayment(props) {
       }
     };
 
-
-    console.log(address);
-    
 
     addNewAddress();
   }, [ formData]);

@@ -37,7 +37,7 @@ export default function PaymentPage() {
     try {
       const response = await authCtrl.login(initialValue);
       login(response.access);
-      window.location.replace("/payment");
+ //   window.location.replace("/payment");
     } catch (error) {
       console.log(error.message);      
     }
