@@ -35,7 +35,7 @@ const addressCtrl = new Address();
 export function ListPayment(props) {
   const { accesToken, login, logout, user, loading } = useAuth();
   const { addChange, product, address, payMethod } = props;
-  const { decreaseCart, incrementCart, deleteCart } = useCart();
+  const { decreaseCart, incrementCart, deleteAllCart  } = useCart();
   const [show, setShow] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [envio, setEnvio] = useState(() => {
@@ -56,9 +56,8 @@ export function ListPayment(props) {
     Array.isArray(address) && address.length > 0 ? address[0] : null
   );
 
-  
   const payment = async (product, address) => {
-
+    
     try {
       const storedInitPoint = localStorage.getItem("init_point");
 
@@ -76,7 +75,12 @@ export function ListPayment(props) {
       if (response && response.init_point) {
         localStorage.setItem("init_point", response.init_point);
 
-        window.location.href = response.init_point;
+       window.location.href = response.init_point;
+
+        //limpiar Carrito
+        //deleteAllCart();
+        
+      
       } else {
         console.error("No se recibió una URL válida en la respuesta");
       }
@@ -135,11 +139,11 @@ export function ListPayment(props) {
           await logout();
           const { email, password } = formValue;
 
-          await userCtrl.addUserApi({ email, password });         
+          await userCtrl.addUserApi({ email, password });
 
           const response = await authCtrl.login({ email, password });
           await login(response.access);
- 
+
           const newAddressData = {
             title: "Principal",
             name: formValue.name,
@@ -150,10 +154,9 @@ export function ListPayment(props) {
             email,
             password,
           };
-        
+
           setFormData(newAddressData);
         } else {
-         
           payment(product, address);
         }
       } catch (error) {
@@ -179,19 +182,16 @@ export function ListPayment(props) {
 
   // handleCityChange usando la función reutilizable
   const handleCityChange = (event) => {
-    const { value } = event.target;  // Obtiene el valor ingresado en el input
-       
-    formik.setFieldValue("city", value);  // Actualiza el valor de la ciudad en formik
-    const envio = calculateEnvio(value);  // Llama a la función de validación
-    setEnvio(envio);  // Actualiza el valor de envío
+    const { value } = event.target; // Obtiene el valor ingresado en el input
+
+    formik.setFieldValue("city", value); // Actualiza el valor de la ciudad en formik
+    const envio = calculateEnvio(value); // Llama a la función de validación
+    setEnvio(envio); // Actualiza el valor de envío
   };
 
   useEffect(() => {
     const addNewAddress = async () => {
-     
-      
       if (user && formData) {
-        console.log("Conteo");
         try {
           const response = await addressCtrl.addAddress(
             formData,
@@ -210,9 +210,8 @@ export function ListPayment(props) {
       }
     };
 
-
     addNewAddress();
-  }, [ formData]);
+  }, [formData]);
 
   return (
     <div className={styles.list}>
@@ -220,7 +219,7 @@ export function ListPayment(props) {
         <h2>Finalizar Compra</h2>
 
         <Form onSubmit={formik.handleSubmit}>
-        {(address.length < 1 || (address[0]?.name === "Apellidos")) && (
+          {(address.length < 1 || address[0]?.name === "Apellidos") && (
             <>
               <FormGroup floating>
                 <Input

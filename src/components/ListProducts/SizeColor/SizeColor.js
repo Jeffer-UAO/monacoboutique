@@ -103,6 +103,8 @@ export function SizeColor({ propductTC, getOffer, toggle }) {
   };
 
 
+  
+
   useEffect(() => {
     if (selectedTalla && selectedColor) {
       const product = getPrecioProducto(selectedTalla, selectedColor);
@@ -175,7 +177,7 @@ export function SizeColor({ propductTC, getOffer, toggle }) {
             <AiFillPlusCircle onClick={incrementQuantity} size={25} />
           </frames>
         </div>
-        {productDetail.discount > 0 && <p>Prendas en promoción no tienen cambio</p>}
+        {productDetail.product?.price_old > productDetail.product?.price1 && <p>Prendas en promoción no tienen cambio</p>}
 
         <div>
           <Button

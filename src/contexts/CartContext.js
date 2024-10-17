@@ -41,14 +41,12 @@ export function CartProvider(props) {
     setLoading(false);    
   };
 
-
   const deleteCart = (itemId) => { 
     setLoading(true);
     cartCtrl.delete(itemId);
     refreshTotalCart();
     setLoading(false);    
   };
-
 
   const deleteAllCart = () => { 
     setLoading(true);
@@ -61,9 +59,6 @@ export function CartProvider(props) {
     setTotal(cartCtrl.count());
     setCart(cartCtrl.getAll());
   };
-
-
-  
 
   const data = {
     cart,

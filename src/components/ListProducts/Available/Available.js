@@ -61,6 +61,9 @@ export function Available(props) {
     return roundedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
+  console.log(uniqueProducts);
+  
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -116,7 +119,7 @@ export function Available(props) {
           <div key={index}>
             {product.qty_available > 0 ? (
               <div className={styles.image}>
-                {product.price_old > product.price1 && (
+                {product.product.price_old > product.product.price1 && (
                   <div className={styles.offer}>
                     <h5>¡OFERTA!</h5>
                   </div>
@@ -140,11 +143,11 @@ export function Available(props) {
                     />
                   </Link>
                 )}
-                <h5>{product.name}</h5>
-                <h5> $ {format(parseInt(product.price1))}</h5>
+                <h5>{product.product.name_extend}</h5>
+                <h5> $ {format(parseInt(product.product.price1))}</h5>
 
-                {product.price_old > 0 && (
-                  <h6> $ {format(parseInt(product.price_old))}</h6>
+                {product.product.price_old > 0 && (
+                  <h6> $ {format(parseInt(product.product.price_old))}</h6>
                 )}
               </div>
             ) : (
@@ -152,7 +155,7 @@ export function Available(props) {
                 <div className={styles.offer}>
                   <h5>AGOTADO</h5>
                 </div>
-                {product.images ? (
+                {product.product.images ? (
                   <CardImg
                     alt="Card image cap"
                     src={BASE_NAME + product.product.images}
@@ -163,7 +166,7 @@ export function Available(props) {
                     src={product.product.image_alterna}
                   />
                 )}
-                <h5>{product.name}</h5>
+                <h5>{product.product.name_extend}</h5>
               </div>
             )}
             {/* <Button

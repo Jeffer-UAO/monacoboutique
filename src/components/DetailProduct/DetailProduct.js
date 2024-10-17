@@ -57,6 +57,8 @@ export function DetailProduct(props) {
     window.scrollTo(0, 0);
   };
 
+  console.log(productData);
+  
   //-----------------------------------------------
 
   const handleQuantityChange = (event) => {
@@ -109,7 +111,7 @@ export function DetailProduct(props) {
     return (
       <>
         <div className={styles.detailProduct}>
-          {offer.price_old > offer.price1 && (
+          {productData?.price_old > productData?.price1 && (
             <div className={styles.offer}>
               <h5>¡OFERTA!</h5>
             </div>

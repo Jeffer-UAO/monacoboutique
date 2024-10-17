@@ -1,4 +1,4 @@
-export const BASE_API = "https://boutiquemonaco.suprainnovations.store"
+ export const BASE_API = "https://boutiquemonaco.suprainnovations.store"
 // export const BASE_API = "http://testing.localhost:8000"
 
 export const SEARCH_HISTORY = "search-history";
