@@ -57,7 +57,7 @@ export function ListPayment(props) {
   );
 
   const payment = async (product, address) => {
-    localStorage.removeItem("init_point");
+ 
     
     try {
       const storedInitPoint = localStorage.getItem("init_point");
