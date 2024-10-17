@@ -75,7 +75,7 @@ export function ListPayment(props) {
       if (response && response.init_point) {
         // localStorage.setItem("init_point", response.init_point);
 
-        localStorage.removeItem("init_point");
+        //localStorage.removeItem("init_point");
 
        window.location.href = response.init_point;
 
