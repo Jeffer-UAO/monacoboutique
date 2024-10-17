@@ -60,12 +60,12 @@ export function ListPayment(props) {
     localStorage.removeItem("init_point");
     
     try {
-      // const storedInitPoint = localStorage.getItem("init_point");
+      const storedInitPoint = localStorage.getItem("init_point");
 
-    //  if (storedInitPoint) {
-    //    window.location.href = storedInitPoint;
-    //    return;
-    //  }
+      if (storedInitPoint) {
+        window.location.href = storedInitPoint;
+        return;
+      }
 
       const response = await paymentCtrl.createPayload(
         product,
@@ -74,9 +74,7 @@ export function ListPayment(props) {
       );
 
       if (response && response.init_point) {
-        // localStorage.setItem("init_point", response.init_point);
-
-        //localStorage.removeItem("init_point");
+        localStorage.setItem("init_point", response.init_point);
 
        window.location.href = response.init_point;
 
