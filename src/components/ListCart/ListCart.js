@@ -12,7 +12,7 @@ import styles from "./ListCart.module.scss";
 
 export function ListCart(props) {
   const { product } = props;
-  const { decreaseCart, incrementCart, deleteCart } = useCart();
+  const { decreaseCart, incrementCart, deleteCart, deleteAllCart } = useCart();
   const router = useRouter();
 
   const format = (number) => {
@@ -31,8 +31,9 @@ export function ListCart(props) {
     0
   );
 
-  console.log(product);
-
+  const deleteCar = () => {
+    deleteAllCart();
+  }
   
   const handleHome = () => {
     router.push("/");
@@ -141,6 +142,10 @@ export function ListCart(props) {
 
         <Button outline block onClick={() => handleHome()}>
           Seguir comprando
+        </Button>
+
+        <Button outline block onClick={() => deleteCar()}>
+          Eliminar todo
         </Button>
       </div>
     </div>
