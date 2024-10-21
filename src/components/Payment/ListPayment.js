@@ -57,29 +57,30 @@ export function ListPayment(props) {
   );
 
   const payment = async (product, address) => {
- 
     
     try {
-      const storedInitPoint = localStorage.getItem("init_point");
+  //   const storedInitPoint = localStorage.getItem("init_point");
 
-      if (storedInitPoint) {
-        window.location.href = storedInitPoint;
-        return;
-      }
+  // if (storedInitPoint) {
+  //  window.location.href = storedInitPoint;
+  //    return;
+   //   }
 
       const response = await paymentCtrl.createPayload(
         product,
         address,
         accesToken
       );
+      
 
       if (response && response.init_point) {
         localStorage.setItem("init_point", response.init_point);
 
        window.location.href = response.init_point;
+       
 
         //limpiar Carrito
-        //deleteAllCart();
+        deleteAllCart();
         
       
       } else {
@@ -158,7 +159,8 @@ export function ListPayment(props) {
 
           setFormData(newAddressData);
         } else {
-          payment(product, address);
+          payment(product, address[0].id);
+
         }
       } catch (error) {
         toast.error(error.message);

@@ -3,18 +3,14 @@ import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks";
 import { Products } from "@/api/products";
 import {
-  Footer,
-  FooterApp,
-  FooterCart,
+  
   ListCart,
   NotFound,
   Redes,
   Separator,
-  LoginFormClient
 } from "@/components";
 import { BasicLayout } from "@/layouts";
 import { size } from "lodash";
-import { BASE_NAME } from "@/config/constants";
 
 const productCtrl = new Products();
 
@@ -23,7 +19,7 @@ export default function CartPage() {
   const { cart } = useCart();
   const [product, setProduct] = useState("");
   const [load, setLoad] = useState(true);
-  const hasProduct = size(product) > 0;
+  const hasProduct = size(product) > 0;  
 
   // const [newProduct, setNewProduct] = useState("");
   // const [follow, setFollow] = useState("");
