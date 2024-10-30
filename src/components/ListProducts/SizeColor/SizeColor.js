@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from "react";
-import map from "lodash/map";
-import { Input, Button } from "reactstrap";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { Button } from "reactstrap";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "react-toastify";
-
-import { AiFillPlusCircle } from "react-icons/ai";
-import { AiOutlineMinusCircle } from "react-icons/ai";
-
+import { AiFillPlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import styles from "./SizeColor.module.scss";
 
 export function SizeColor({ propductTC, getOffer, toggle }) {
-  const { addCart, incrementCart, decreaseCart, deleteCart } = useCart();
-  const [idProduct, setIdPropduct] = useState();
-  const [productDetail, setProductDetail] = useState(0);
+  const { addCart } = useCart();
+  const [productDetail, setProductDetail] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [selectedTalla, setSelectedTalla] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -22,121 +17,97 @@ export function SizeColor({ propductTC, getOffer, toggle }) {
     return roundedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  const tallas = [...new Set(propductTC.map((item) => item.talla))];
-  const colores = [...new Set(propductTC.map((item) => item.color))];
+  const tallas = useMemo(
+    () => [...new Set(propductTC.map((item) => item.talla))],
+    [propductTC]
+  );
 
-  const availableColors = selectedTalla
-    ? [
-        ...new Set(
-          propductTC
-            .filter((item) => item.talla === selectedTalla)
-            .map((item) => item.color)
-        ),
-      ]
-    : colores;
+  const colores = useMemo(
+    () => [...new Set(propductTC.map((item) => item.color))],
+    [propductTC]
+  );
 
-  const availableTallas = selectedColor
-    ? [
-        ...new Set(
-          propductTC
-            .filter((item) => item.color === selectedColor)
-            .map((item) => item.talla)
-        ),
-      ]
-    : tallas;
+  const availableColors = useMemo(() => {
+    return selectedTalla
+      ? [
+          ...new Set(
+            propductTC
+              .filter((item) => item.talla === selectedTalla)
+              .map((item) => item.color)
+          ),
+        ]
+      : colores;
+  }, [selectedTalla, propductTC]);
 
-  const handleTallaClick = (talla) => {
-    if (selectedTalla === talla) {
-      setSelectedTalla(null);
-    } else {
-      setSelectedTalla(talla);
-    }
+  const availableTallas = useMemo(() => {
+    return selectedColor
+      ? [
+          ...new Set(
+            propductTC
+              .filter((item) => item.color === selectedColor)
+              .map((item) => item.talla)
+          ),
+        ]
+      : tallas;
+  }, [selectedColor, propductTC]);
 
-    if (selectedColor && !availableColors.includes(selectedColor)) {
-      setSelectedColor(null);
-    }
-  };
+  const handleTallaClick = useCallback(
+    (talla) => {
+      setSelectedTalla((prevTalla) => (prevTalla === talla ? null : talla));
 
-  // Manejador de selección de color
-  const handleColorClick = (color) => {
-    if (selectedColor === color) {
-      setSelectedColor(null);
-    } else {
-      setSelectedColor(color);
-    }
+      if (selectedColor && !availableColors.includes(selectedColor)) {
+        setSelectedColor(null);
+      }
+    },
+    [selectedColor, availableColors]
+  );
 
-    if (selectedTalla && !availableTallas.includes(selectedTalla)) {
-      setSelectedTalla(null);
-    }
-  };
+  const handleColorClick = useCallback(
+    (color) => {
+      setSelectedColor((prevColor) => (prevColor === color ? null : color));
 
-  const getCodigoProducto = (talla, color) => {
-    const productoCoincidente = propductTC.find(
-      (item) => item.talla === talla && item.color === color
-    );
-    return productoCoincidente ? productoCoincidente.codigo : null;
-  };
+      if (selectedTalla && !availableTallas.includes(selectedTalla)) {
+        setSelectedTalla(null);
+      }
+    },
+    [selectedTalla, availableTallas]
+  );
 
-  const addData = () => {
+  const getCodigoProducto = useCallback(
+    (talla, color) =>
+      propductTC.find((item) => item.talla === talla && item.color === color)
+        ?.codigo || null,
+    [propductTC]
+  );
+
+  const addData = useCallback(() => {
     const item = getCodigoProducto(selectedTalla, selectedColor);
     addCart(item, quantity);
-    toast.success("¡Se agrego con exito!");
-  };
+    toast.success("¡Se agregó con éxito!");
+  }, [selectedTalla, selectedColor, quantity, getCodigoProducto, addCart]);
 
-  const incrementQuantity = () => {
-    if (quantity < 99) {
-      setQuantity(quantity + 1);
-    }
-  };
+  const incrementQuantity = () => setQuantity((prev) => Math.min(prev + 1, 99));
+  const decrementQuantity = () => setQuantity((prev) => Math.max(prev - 1, 1));
 
-  const decrementQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
-
-  const getPrecioProducto = (talla, color) => {
-    const productoCoincidente = propductTC.find(
-      (item) => item.talla === talla && item.color === color
-    );
-    return productoCoincidente ? productoCoincidente : null;
-  };
-
-
-  
+  const getPrecioProducto = useCallback(
+    (talla, color) =>
+      propductTC.find((item) => item.talla === talla && item.color === color) ||
+      null,
+    [propductTC]
+  );
 
   useEffect(() => {
-    if (selectedTalla && selectedColor) {
-      const product = getPrecioProducto(selectedTalla, selectedColor);
-      getOffer(product);
-      setProductDetail(product);
-    } else if (propductTC.length > 0) {
-      // Seleccionar el primer producto de la lista si no hay selección
-      const defaultProduct = propductTC[0];
-      getOffer(defaultProduct);
-      setProductDetail(defaultProduct);
-    } else {
-      setProductDetail(0);
-    }
-  }, [selectedTalla, selectedColor, propductTC]);
+    const product =
+      selectedTalla && selectedColor
+        ? getPrecioProducto(selectedTalla, selectedColor)
+        : propductTC[0] || null;
+
+    setProductDetail(product);
+    if (product) getOffer(product);
+  }, [selectedTalla, selectedColor, propductTC, getPrecioProducto, getOffer]);
 
   return (
     <div className={styles.sizeColor}>
-      {/* {productDetail.discount > 0 ? (
-        <div className={styles.price}>
-          <h5> $ {format(productDetail.price - productDetail.discount)}</h5>
-          <h6> $ {format(productDetail.price)}</h6>
-        </div>
-      ) : productDetail.price ? (
-        <div className={styles.price}>
-          <h5> $ {format(productDetail.price)}</h5>
-        </div>
-      ) : (
-        <div className={styles.price}>
-          <h5> $ ...</h5>
-        </div>
-      )} */}
-
       <div className={styles.sizeColor__container}>
         <h5>Talla</h5>
         {tallas.map((talla) => (
@@ -171,13 +142,15 @@ export function SizeColor({ propductTC, getOffer, toggle }) {
         <div className={styles.quantity}>
           <h5>Cantidad</h5>
 
-          <frames>
+          <div>
             <AiOutlineMinusCircle onClick={decrementQuantity} size={25} />
             <p>{quantity}</p>
             <AiFillPlusCircle onClick={incrementQuantity} size={25} />
-          </frames>
+          </div>
         </div>
-        {productDetail.product?.price_old > productDetail.product?.price1 && <p>Prendas en promoción no tienen cambio</p>}
+        {productDetail.product?.price_old > productDetail.product?.price1 && (
+          <p>Prendas en promoción no tienen cambio</p>
+        )}
 
         <div>
           <Button

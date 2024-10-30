@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useCallback, useMemo } from "react";
 import { Token, User } from "@/api";
 
 const tokenCtrl = new Token();
@@ -6,58 +6,62 @@ const userCtrl = new User();
 
 export const AuthContext = createContext();
 
-export function AuthProvider(props) {
-  const { children } = props;
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [accesToken, setAccesToken] = useState(null);
+  const [accessToken, setAccessToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const logout = useCallback(() => {
+    tokenCtrl.removeToken();
+    setAccessToken(null);
+    setUser(null);
+    setLoading(false); // Asegurarse de establecer loading a false en logout
+  }, []);
+
+  const login = useCallback(async (token) => {
+    try {
+      tokenCtrl.setToken(token);
+      setAccessToken(token);
+      const userData = await userCtrl.getMeAPi();
+      setUser(userData);
+    } catch (error) {
+      console.error("Login error:", error);
+      logout(); // Desloguear en caso de error.
+    } finally {
+      setLoading(false); // Asegurarse de que loading se establezca en false aquí
+    }
+  }, [logout]);
+
   useEffect(() => {
-    (async () => {
-      const token = tokenCtrl.getToken(); 
+    const initializeAuth = async () => {
+      const token = tokenCtrl.getToken();
 
-      if (!token) {
-        logout();
-        setLoading(false);
-        return;
-      }
-
-      if (tokenCtrl.hasExpired(token)) {
+      if (!token || tokenCtrl.hasExpired(token)) {
         logout();
       } else {
         await login(token);
       }
-    })(); 
-  }, []);
+    };
 
-  const login = async (token) => {
-    try {
-      tokenCtrl.setToken(token);
-      setAccesToken(token);      
-      const response = await userCtrl.getMeAPi();
-      setUser(response);      
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
+    initializeAuth();
+  }, [login, logout]);
 
-  const logout = () => {
-    tokenCtrl.removeToken();
-    setAccesToken(null);
-    setUser(null);
-  };
+  const authData = useMemo(
+    () => ({
+      accessToken,
+      user,
+      login,
+      logout,
+      loading,
+    }),
+    [accessToken, user, login, logout, loading]
+  );
 
-  const data = {
-    accesToken,
-    user,
-    login,
-    logout,
-    loading,
-  };
+  if (loading) return null; // No renderiza hasta que el estado de loading sea false.
 
-  if (loading) return null;
-
-  return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authData}>
+      {children}
+    </AuthContext.Provider>
+  );
 }

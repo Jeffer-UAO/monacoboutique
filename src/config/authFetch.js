@@ -1,6 +1,7 @@
 import { Token } from "@/api";
 
-export async function authFetch(url, params) {
+
+export async function authFetch(url, params = {}) {
   const tokenCtrl = new Token();
   const token = tokenCtrl.getToken();
 
@@ -9,25 +10,23 @@ export async function authFetch(url, params) {
     window.location.replace("/");
   };
 
-  if (!token) {
+  if (!token || tokenCtrl.hasExpired(token)) {
     logout();
-  } else {
-    if (tokenCtrl.hasExpired(token)) {
-      logout();
-    } else {
-      const paramsTemp = {
-        ...params,
-        headers: {
-          ...params?.headers,
-          Authorization: `Bearer ${token}`,
-        },
-      };
+    return;
+  }
 
-      try {
-        return await fetch(url, paramsTemp);
-      } catch (error) {
-        return error;
-      }
-    }
+  const paramsTemp = {
+    ...params,
+    headers: {
+      ...params.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    return await fetch(url, paramsTemp);
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return error;
   }
 }

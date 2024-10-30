@@ -1,53 +1,39 @@
 import { useCart } from "@/hooks/useCart";
 import { Button, CardImg } from "reactstrap";
-import { map } from "lodash";
+import { useRouter } from "next/router";
+import { AiFillPlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
+import { BsTrash3 } from "react-icons/bs";
+import styles from "./ListCart.module.scss";
 import { BASE_NAME } from "@/config/constants";
 
-import { BsTrash3 } from "react-icons/bs";
-import { AiFillPlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
-
-import { useRouter } from "next/router";
-
-import styles from "./ListCart.module.scss";
-
-export function ListCart(props) {
-  const { product } = props;
+export function ListCart({ product }) {
   const { decreaseCart, incrementCart, deleteCart, deleteAllCart } = useCart();
   const router = useRouter();
 
-  const format = (number) => {
-    const integerPart = Math.floor(number);
-    return integerPart.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
+  // Función para formatear los números a formato colombiano (COP)
+  const formatCurrency = (number) =>
+    new Intl.NumberFormat("es-CO").format(Math.floor(number));
 
-  // Calcular el subtotal del carrito
+  // Cálculo del subtotal y descuentos
   const subtotal = product.reduce(
     (acc, item) => acc + item[0]?.price1 * item.quantity,
     0
   );
 
   const descuento = product.reduce(
-    (acc, item) => acc + (item[0]?.product.price_old - item[0]?.product.price1) * item.quantity,
+    (acc, item) =>
+      acc +
+      (item[0]?.product.price_old - item[0]?.product.price1) * item.quantity,
     0
   );
 
-  const deleteCar = () => {
-    deleteAllCart();
-  }
-  
-  const handleHome = () => {
-    router.push("/");
-  };
-
-  const handlePayment = () => {
-    router.push("/payment");
-  };
+  const handleNavigation = (path) => router.push(path);
 
   return (
     <div className={styles.list}>
       <h4>CARRITO</h4>
 
-      {map(product, (item) => (
+      {product.map((item) => (
         <div key={item[0]?.codigo} className={styles.card}>
           <div className={styles.body}>
             <div className={styles.body__content}>
@@ -57,52 +43,41 @@ export function ListCart(props) {
                 onClick={() => deleteCart(item[0]?.codigo)}
               />
 
-              {item[0]?.images ? (
-                <CardImg
-                  alt="Card image cap"
-                  src={BASE_NAME + item[0]?.images}
-                  className={styles.skeleton}
-                />
-              ) : (
-                <CardImg
-                  alt="Card image cap"
-                  src={item[0]?.image_alterna}
-                  className={styles.skeleton}
-                />
-              )}
+              <CardImg
+                alt="Imagen del producto"
+                src={BASE_NAME + (item[0]?.images || item[0]?.image_alterna)}
+                className={styles.skeleton}
+              />
 
-              <frames className={styles.sizecolor}>
+              <div className={styles.sizecolor}>
                 <p>
                   Talla <label>{item[0]?.talla}</label>
                 </p>
                 <p>
                   Color <label>{item[0]?.color}</label>
                 </p>
-              </frames>
+              </div>
 
-              <frames className={styles.price}>
-                <p className={styles.unid}>
-                  Unidad: $ {format(item[0]?.price1)}{" "}
-                </p>
-                <p className={styles.unid}>
-                  SubTotal: $ {format(item[0]?.price1 * item.quantity)}
+              <div className={styles.price}>
+                <p>Unidad: $ {formatCurrency(item[0]?.price1)}</p>
+                <p>
+                  Subtotal: $ {formatCurrency(item[0]?.price1 * item.quantity)}
                 </p>
                 {item[0]?.product.price_old > 0 && (
-                  <p className={styles.unid}>
+                  <p>
                     Descuento:{" "}
-                    <u>$ {format((item[0]?.product.price_old - item[0]?.product.price1) * item.quantity)}</u>{" "}
+                    <u>
+                      ${" "}
+                      {formatCurrency(
+                        (item[0]?.product.price_old - item[0]?.price1) *
+                          item.quantity
+                      )}
+                    </u>
                   </p>
                 )}
+              </div>
 
-                {/* <p className={styles.total}>
-                  Total: ${" "}
-                  {format(
-                    (item[0]?.product.price_old - item[0]?.product.price1) * item.quantity
-                  )}
-                </p> */}
-              </frames>
-
-              <frames className={styles.button}>
+              <div className={styles.button}>
                 <AiOutlineMinusCircle
                   onClick={() => decreaseCart(item[0].codigo)}
                   size={20}
@@ -112,7 +87,7 @@ export function ListCart(props) {
                   onClick={() => incrementCart(item[0].codigo)}
                   size={20}
                 />
-              </frames>
+              </div>
             </div>
           </div>
 
@@ -123,29 +98,26 @@ export function ListCart(props) {
       ))}
 
       <div className={styles.totales}>
-        <p>SUBTOTAL: $ {format(subtotal)}</p>
+        <p>SUBTOTAL: $ {formatCurrency(subtotal)}</p>
         {descuento > 0 && (
-          <label>
+          <>
             <p>
-              {" "}
-              DESCUENTO:<u> $ {format(descuento)}</u>
+              DESCUENTO: <u>$ {formatCurrency(descuento)}</u>
             </p>
-            <p>TOTAL: $ {format(subtotal - descuento)}</p>
-          </label>
+            <p>TOTAL: $ {formatCurrency(subtotal - descuento)}</p>
+          </>
         )}
       </div>
 
       <div className={styles.footButton}>
-        <Button block onClick={() => handlePayment()}>
+        <Button block onClick={() => handleNavigation("/payment")}>
           Finalizar Compra
         </Button>
-
-        <Button outline block onClick={() => handleHome()}>
-          Seguir comprando
+        <Button outline block onClick={() => handleNavigation("/")}>
+          Seguir Comprando
         </Button>
-
-        <Button outline block onClick={() => deleteCar()}>
-          Eliminar todo
+        <Button outline block onClick={deleteAllCart}>
+          Eliminar Todo
         </Button>
       </div>
     </div>

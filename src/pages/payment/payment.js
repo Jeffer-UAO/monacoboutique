@@ -1,125 +1,106 @@
 import React, { useEffect, useState } from "react";
 import { useCart, useAuth } from "@/hooks";
 import { Products, Address, User, Auth } from "@/api";
-
-
-
 import {
   Separator,
   NotFound,
   Footer,
   ListPayment,
-  FooterApp,
 } from "@/components";
 import { BasicLayout } from "@/layouts";
-import { size } from "lodash";
 
 const productCtrl = new Products();
 const addressCtrl = new Address();
-const userCtrl = new User();
 const authCtrl = new Auth();
 
 export default function PaymentPage() {
   const { user, accesToken, login } = useAuth();
   const { cart } = useCart();
-  const [product, setProduct] = useState("");
-  const [address, setAddress] = useState("");
-  const [change, setChange] = useState(false);
-  const [load, setLoad] = useState(true);
-  const hasProduct = size(product) > 0;
+  const [products, setProducts] = useState([]); // Cambié a un array por consistencia
+  const [address, setAddress] = useState(null); // Inicializar en null para mejor control
+  const [loading, setLoading] = useState(true);
 
-  const userTemporal = async() => {   
-      const initialValue = {
-        email: "hh@gmail.com",
-        password: "1452",
-      };    
+  // Función para iniciar sesión temporalmente
+  const loginUser = async () => {
+    const initialValue = {
+      email: "hh@gmail.com",
+      password: "1452",
+    };
 
     try {
       const response = await authCtrl.login(initialValue);
       login(response.access);
- //   window.location.replace("/payment");
     } catch (error) {
-      console.log(error.message);      
+      console.error("Login error:", error.message);
     }
-  }
-
-  useEffect(() => {
-    if (!user) {
-      userTemporal();
-    }
-  }, []);  // Dependencia de `user`, para no ejecutar repetidamente
- 
-
-
-  const addChange = () => {
-    setChange(!change);
   };
 
+  // Comprobar el usuario y loguear si es necesario
   useEffect(() => {
-    (async () => {
+    if (!user) {
+      loginUser();
+    }
+  }, []); // Dependencia `user`
+
+  // Obtener productos del carrito
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true); // Iniciar carga
       try {
-        const data = [];
-        for await (const item of cart) {
-          const response = await productCtrl.getProductByCode(item.id);
-          data.push({ ...response, quantity: item.quantity });
-        }
-        setProduct(data);
-        setLoad(false);
+        const data = await Promise.all(cart.map(item => 
+          productCtrl.getProductByCode(item.id).then(response => ({
+            ...response,
+            quantity: item.quantity,
+          }))
+        ));
+        setProducts(data);
       } catch (error) {
-        console.error(`Error: ${error}`);
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false); // Finalizar carga
       }
-    })();
+    };
+
+    if (cart.length > 0) { // Verificar que el carrito no esté vacío
+      fetchProducts();
+    } else {
+      setLoading(false); // Finalizar carga si el carrito está vacío
+    }
   }, [cart]);
 
+  // Obtener dirección del usuario
   useEffect(() => {
-    (async () => {
+    const fetchAddress = async () => {
+      if (!user) return; // Asegurarse de que el usuario esté definido
       try {
-         const response = await addressCtrl.getAddress(accesToken, user.id);
-         setAddress(response);                 
-         setLoad(false);
+        const response = await addressCtrl.getAddress(accesToken, user.id);
+        setAddress(response);
       } catch (error) {
-        console.error(`Error: ${error}`);
+        console.error("Error fetching address:", error);
+      } finally {
+        setLoading(false); // Finalizar carga
       }
-    })();
-  }, [change]);
+    };
 
+    fetchAddress();
+  }, [accesToken, user]); // Dependencias
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //        const response = await addressCtrl.getAddress(accesToken, user.id);
-
-  //        setAddress(response);
-  //        setLoad(false);
-  //     } catch (error) {
-  //       console.error(`Error: ${error}`);
-  //     }
-  //   })();
-  // }, []);
-
-
-
-
+  const hasProducts = products.length > 0; // Verificar si hay productos
 
   return (
     <BasicLayout>
       <Separator />
-      {load ? (
+      {loading ? (
         <h1>Cargando ...</h1>
       ) : (
-        <>
-          {hasProduct ? (
-            <>            
-              <ListPayment addChange={addChange} product={product} address={address} payMethod={'payMethod'} />
-          
-              <Footer />
-            </>
-          ) : (
-            <NotFound
-              title={"Uppss... en este momento no hay productos para pagar"}
-            />
-          )}
-        </>
+        hasProducts ? (
+          <>
+            <ListPayment addChange={setAddress} product={products} address={address} payMethod={'payMethod'} />
+            <Footer />
+          </>
+        ) : (
+          <NotFound title="Uppss... en este momento no hay productos para pagar"/>
+        )
       )}
     </BasicLayout>
   );

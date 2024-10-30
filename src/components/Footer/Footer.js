@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { map } from "lodash";
-import { Categories } from "@/api/category";
-import Link from "next/link";
+import React, { useState } from "react";
+
 
 import styles from "./Footer.module.scss";
 
-const categoriesCtrl = new Categories();
+// const categoriesCtrl = new Categories();
 
 export function Footer() {
   const [categories, setCategories] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await categoriesCtrl.getAll();
-        setCategories(response);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const response = await categoriesCtrl.getAll();
+  //       setCategories(response);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   })();
+  // }, []);
 
   return (
     <div className={styles.footer}>

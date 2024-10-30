@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useCart } from "@/hooks/useCart";
-import { size, map } from "lodash";
-import { Categories } from "@/api";
-// import { u }
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+// import { Categories } from "@/api";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiMenu } from "react-icons/bi";
 import { BsSearch } from "react-icons/bs";
-import { useRouter } from "next/router";
+
+import { useCart } from "@/hooks/useCart";
 import {
   CardImg,
   Button,
@@ -16,37 +16,26 @@ import {
   ModalFooter,
   FormGroup,
 } from "reactstrap";
-import Link from "next/link";
 
 import styles from "./TopBar.module.scss";
 import { Redes } from "@/components/Redes";
 
-const categoriesCtrl = new Categories();
+// const categoriesCtrl = new Categories();
 
-export function TopBar() {
-  const [categories, setCategories] = useState([]);
+export function TopBar({ categories, isLoading }) {
   const router = useRouter();
   const { total } = useCart();
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
+  // const toggleModal = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const data = await categoriesCtrl.getAll();
-        setCategories(data);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
+  const toggleModal = useCallback(() => setIsOpen((prev) => !prev), []);
 
   function handleClickAdmin() {
     router.push(
-      "https://boutiquemonaco.suprainnovations.store/admin-dashboard/"
+      "https://boutiquemonaco.suprainnovations.store/admin-dashboard"
     );
   }
 
@@ -83,14 +72,19 @@ export function TopBar() {
 
       <div className={styles.topbar_category}>
         <p>
-          <Link href="\"> Inicio </Link>
+          <Link href="/">Inicio</Link>
         </p>
-
-        {map(categories, (category) => (
-          <p key={category.id}>
-            <Link href={`/products/${category.slug}`}> {category.name} </Link>
-          </p>
-        ))}
+        {isLoading ? (
+          <p>Cargando categorías...</p>
+        ) : categories?.length > 0 ? (
+          categories.map((category) => (
+            <p key={category.id}>
+              <Link href={`/products/${category.slug}`}>{category.name}</Link>
+            </p>
+          ))
+        ) : (
+          <p></p>
+        )}
       </div>
 
       <Modal isOpen={isOpen} toggle={toggleModal}>
@@ -99,16 +93,6 @@ export function TopBar() {
         <ModalBody>
           <FormGroup>
             <p onClick={() => handleClickAdmin()}>Admin</p>
-
-            {/* <Link href="/">
-              <p>Ir a...</p>
-            </Link>
-            <Link href="/">
-              <p>Ir a...</p>
-            </Link>
-            <Link href="/">
-              <p>Ir a...</p>
-            </Link> */}
           </FormGroup>
         </ModalBody>
 

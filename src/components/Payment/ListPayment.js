@@ -133,7 +133,7 @@ export function ListPayment(props) {
   // }, []);
 
   const formik = useFormik({
-    initialValues: initialValues(address[0]),
+    initialValues: initialValues(address),
     validationSchema: Yup.object(validationSchema()),
     onSubmit: async (formValue) => {
       try {
@@ -168,9 +168,9 @@ export function ListPayment(props) {
     },
   });
 
-  const addAdress = async () => {
-    await addressCtrl.addAddress(formValue, user.id, accesToken);
-  };
+  // const addAdress = async () => {
+  //   await addressCtrl.addAddress(formValue, user.id, accesToken);
+  // };
 
   // Función reutilizable para validar y calcular el valor de envío según la ciudad
   const calculateEnvio = (city) => {
@@ -222,7 +222,7 @@ export function ListPayment(props) {
         <h2>Finalizar Compra</h2>
 
         <Form onSubmit={formik.handleSubmit}>
-          {(address.length < 1 || address[0]?.name === "Apellidos") && (
+          {(address[0].length < 1 || address[0]?.name === "Apellidos") && (
             <>
               <FormGroup floating>
                 <Input

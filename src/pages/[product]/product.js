@@ -18,8 +18,7 @@ export default function ProductPage(props) {
         product={product}
         relate={relate}
         productInventory={inventory}
-      />
-      <Footer />
+      />     
     </div>
   );
 }

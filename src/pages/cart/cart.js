@@ -1,70 +1,55 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks";
 import { Products } from "@/api/products";
-import {
-  
-  ListCart,
-  NotFound,
-  Redes,
-  Separator,
-} from "@/components";
+import { ListCart, NotFound, Redes, Separator } from "@/components";
 import { BasicLayout } from "@/layouts";
-import { size } from "lodash";
 
 const productCtrl = new Products();
 
 export default function CartPage() {
   const { user } = useAuth();
   const { cart } = useCart();
-  const [product, setProduct] = useState("");
-  const [load, setLoad] = useState(true);
-  const hasProduct = size(product) > 0;  
+  const [product, setProduct] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const hasProducts = product.length > 0;
 
-  // const [newProduct, setNewProduct] = useState("");
-  // const [follow, setFollow] = useState("");
-
-  // const identificadorUnico = generarIdentificadorUnico();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const data = [];
-        for await (const item of cart) {
+  // Función optimizada para obtener los productos
+  const fetchProducts = useCallback(async () => {
+    try {
+      const data = await Promise.all(
+        cart.map(async (item) => {
           const response = await productCtrl.getProductByCode(item.id);
-          data.push({ ...response, quantity: item.quantity });
-        }
-        setProduct(data);
-        setLoad(false);
-      } catch (error) {
-        console.error(`Error: ${error}`);
-      }
-    })();
+          return { ...response, quantity: item.quantity };
+        })
+      );
+      setProduct(data);
+    } catch (error) {
+      console.error(`Error al cargar productos: ${error}`);
+    } finally {
+      setLoading(false);
+    }
   }, [cart]);
 
-  
+  // useEffect para cargar productos al cambiar el carrito
+  useEffect(() => {
+    if (cart.length > 0) {
+      fetchProducts();
+    } else {
+      setProduct([]);
+      setLoading(false);
+    }
+  }, [cart, fetchProducts]);
+
   return (
     <BasicLayout>
       <Separator />
-      {load ? (
-        <h1>Cargando ...</h1>
+      {loading ? (
+        <h1>Cargando...</h1>
+      ) : hasProducts ? (
+        <ListCart product={product} />
       ) : (
-        <>
-          {hasProduct ? (
-            <>
-              <ListCart product={product} />
-              {/* <FooterApp title={'Iniciar sesión'} component={<LoginFormClient/>} title1={'Finalizar Compra'} title2={'Seguir Comprando'} user={user} /> */}
-            </>
-          ) : (
-            <>
-              <NotFound
-                title={
-                  "Uppss... en este momento no hay productos en el Carrito"
-                }
-              />              
-            </>
-          )}
-        </>
+        <NotFound title="Uppss... en este momento no hay productos en el Carrito" />
       )}
     </BasicLayout>
   );

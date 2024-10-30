@@ -2,12 +2,16 @@ import React, { useEffect } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../scss/global.scss";
-import { CartProvider, AuthProvider } from "@/contexts";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function App(props) {
-  const { Component, pageProps } = props;
+import { CartProvider, AuthProvider } from "@/contexts";
+import { ToastContainer } from "react-toastify";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { CategoryProvider } from '@/contexts/CategoryContext';
+
+
+const queryClient = new QueryClient();
+export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     const requestNotificationPermission = async () => {
@@ -72,9 +76,10 @@ export default function App(props) {
   };
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <AuthProvider>   
           <CartProvider>
+          <CategoryProvider>
             <Component {...pageProps} />
             <ToastContainer
               autoClose={1000}
@@ -85,8 +90,9 @@ export default function App(props) {
               draggable
               pauseOnHover={false}
             />
+            </CategoryProvider>
           </CartProvider>      
       </AuthProvider>
-    </>
+      </QueryClientProvider>
   );
 }

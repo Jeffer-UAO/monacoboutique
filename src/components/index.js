@@ -22,3 +22,4 @@ export * from "./Layout";
  export * from "./Common";
  export * from "./Sliders";
  export * from "./Register";
+export * from "./Loader";
